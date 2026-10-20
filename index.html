@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGrowth</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0FDF4;--surface:#fff;--surface2:#F8FFFE;
+  --border:#D1FAE5;--border2:#86EFAC;
+  --text:#0F172A;--text2:#334155;--text3:#64748B;
+  --green:#16A34A;--green-bg:#DCFCE7;--green-border:#86EFAC;
+  --blue:#2563EB;--blue-bg:#EEF3FE;--blue-border:#BFCFFE;
+  --amber:#CA8A04;--amber-bg:#FEFCE8;--amber-border:#FDE68A;
+  --red:#DC2626;--red-bg:#FEF2F2;--red-border:#FECACA;
+  --purple:#7C3AED;--purple-bg:#F5F0FF;--purple-border:#DDD6FE;
+  --r:8px;--rl:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+a{color:inherit;text-decoration:none}
+
+/* TOPBAR */
+.topbar{height:54px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.logo{font-size:16px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.logo-dot{width:9px;height:9px;background:var(--green);border-radius:50%;box-shadow:0 0 0 3px var(--green-bg)}
+.logo-tag{font-size:10px;background:var(--green-bg);color:var(--green);padding:2px 7px;border-radius:20px;font-weight:600;border:1px solid var(--green-border);letter-spacing:.02em}
+.topbar-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.tb-badge{font-size:11px;color:var(--text3);background:var(--bg);border:1px solid var(--border);padding:3px 10px;border-radius:20px}
+.btn-cta{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:var(--green);color:#fff;transition:background .15s;letter-spacing:-.1px}
+.btn-cta:hover{background:#15803d}
+
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 54px)}
+
+/* SIDEBAR */
+.sidebar{width:226px;background:var(--surface);border-right:1px solid var(--border);padding:16px 10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:2px}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:10px 10px 4px;margin-top:6px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .1s;position:relative}
+.nav-item:hover{background:var(--green-bg);color:var(--green)}
+.nav-item.active{background:var(--green-bg);color:var(--green);font-weight:600}
+.nav-icon{width:16px;height:16px;flex-shrink:0;opacity:.75}
+.nav-item.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 7px;border-radius:12px;background:var(--green);color:#fff}
+.nav-badge.amber{background:var(--amber);color:#fff}
+.sidebar-divider{height:1px;background:var(--border);margin:10px 0}
+.sidebar-footer{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.sf-market{font-size:11px;color:var(--text3);line-height:1.5}
+.sf-market strong{color:var(--green);font-size:13px;display:block;margin-bottom:2px}
+
+/* MAIN */
+.main{flex:1;padding:28px;overflow:auto;max-width:100%}
+.view{display:none}
+.view.active{display:block}
+
+/* PAGE HEADER */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;gap:12px}
+.ph-title{font-size:20px;font-weight:700;color:var(--text);line-height:1.2}
+.ph-sub{font-size:13px;color:var(--text3);margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:#15803d}
+.btn-secondary{background:var(--surface);color:var(--text2);border:1px solid var(--border2)}
+.btn-secondary:hover{background:var(--green-bg)}
+
+/* STAT GRID */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.g2r{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:18px}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px}
+.card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:600;color:var(--text)}
+.card-action{font-size:12px;color:var(--green);cursor:pointer}
+
+/* STAT CARD */
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px}
+.stat-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.stat-val{font-size:26px;font-weight:700;color:var(--text);line-height:1}
+.stat-sub{font-size:12px;color:var(--text3);margin-top:4px}
+.stat-delta{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px;margin-top:8px}
+.du{background:var(--green-bg);color:var(--green)}
+.dd{background:var(--red-bg);color:var(--red)}
+.dn{background:var(--bg);color:var(--text3)}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap}
+.bg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.bb{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.ba{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.br{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.bp{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.bn{background:var(--bg);color:var(--text3);border:1px solid var(--border2)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);border-bottom:2px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg)}
+.tbl-wrap{overflow-x:auto}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prog-l{font-size:12px;color:var(--text2);width:130px;flex-shrink:0}
+.prog-t{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.prog-f{height:100%;border-radius:4px;background:var(--green)}
+.prog-v{width:36px;text-align:right;font-size:12px;font-weight:600;color:var(--text)}
+
+/* ALERT */
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:10px;margin-bottom:14px;font-size:13px;line-height:1.5}
+.alert-green{background:var(--green-bg);border:1px solid var(--green-border);color:#15803d}
+.alert-amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:#92400E}
+.alert-blue{background:var(--blue-bg);border:1px solid var(--blue-border);color:#1e40af}
+.alert-red{background:var(--red-bg);border:1px solid var(--red-border);color:#991B1B}
+
+/* HERO BLOCK */
+.hero{background:linear-gradient(135deg,#DCFCE7 0%,#EEF3FE 100%);border:1px solid var(--green-border);border-radius:16px;padding:28px 32px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(22,163,74,.12) 0%,transparent 70%);pointer-events:none}
+.hero-title{font-size:22px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:8px}
+.hero-sub{font-size:14px;color:var(--text2);max-width:580px;line-height:1.6}
+.hero-stats{display:flex;gap:24px;margin-top:18px;flex-wrap:wrap}
+.hs{text-align:center}
+.hs-val{font-size:22px;font-weight:700;color:var(--green)}
+.hs-label{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* TOOL TAG */
+.tag{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;background:var(--bg);color:var(--text3);border:1px solid var(--border2);margin:2px 2px 0 0}
+
+/* CATEGORY BUTTONS */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.cat-btn{padding:10px 8px;border:1.5px solid var(--border2);border-radius:10px;background:var(--surface);cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);text-align:center;line-height:1.4;transition:all .15s}
+.cat-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.cat-btn.sel{border-color:var(--green);background:var(--green-bg);color:var(--green);font-weight:600}
+.calc-panel{background:var(--surface);border:1.5px solid var(--green-border);border-radius:12px;padding:18px;display:none}
+.calc-panel.on{display:block}
+.rev-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px;margin-top:14px}
+input[type=range]{flex:1;accent-color:var(--green)}
+
+/* PROFESSION CARDS */
+.prof-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+.prof-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+.prof-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.prof-income{font-size:18px;font-weight:700;color:var(--green);margin-bottom:8px}
+.prof-desc{font-size:12px;color:var(--text3);line-height:1.55}
+
+/* COMPARE TABLE */
+.cmp-tbl{width:100%;border-collapse:collapse}
+.cmp-tbl th{padding:10px 14px;font-size:12px;font-weight:700;text-align:left;border-bottom:2px solid var(--border)}
+.cmp-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;line-height:1.5}
+.cmp-tbl tr:last-child td{border-bottom:none}
+.param-col{color:var(--text3);font-weight:600;font-size:12px;width:110px;white-space:nowrap}
+.th-green{color:var(--green);background:var(--green-bg)}
+.th-blue{color:var(--blue);background:var(--blue-bg)}
+
+/* MODULE ROW */
+.mod-row{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.mod-row:last-child{border-bottom:none}
+.mod-num{width:30px;height:30px;border-radius:8px;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.mod-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.mod-desc{font-size:12px;color:var(--text3);line-height:1.55}
+
+/* PHASE CARD */
+.phase-card{background:var(--surface);border:1px solid var(--border);border-left-width:3px;border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.phase-num{position:absolute;top:.5rem;right:1rem;font-size:52px;font-weight:800;color:var(--bg);line-height:1;pointer-events:none}
+.phase-tag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:20px;display:inline-flex;margin-bottom:8px}
+.phase-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px}
+.phase-period{font-size:12px;color:var(--text3);margin-bottom:12px}
+.phase-step{display:flex;gap:8px;font-size:13px;padding:4px 0;color:var(--text2)}
+.phase-arrow{color:var(--green);flex-shrink:0;margin-top:1px}
+.phase-footer{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px}
+
+/* ECON */
+.econ-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.money-flow{display:flex;align-items:center;gap:8px;margin:12px 0;flex-wrap:wrap}
+.mf-box{padding:9px 14px;border-radius:8px;font-size:13px;font-weight:600;text-align:center}
+.arrow-r{font-size:16px;color:var(--text3)}
+.mistake-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.mistake-item:last-child{border-bottom:none}
+.mistake-num{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:var(--red-bg);color:var(--red)}
+.case-stat{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center}
+.case-val{font-size:22px;font-weight:700;color:var(--green)}
+.case-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* KV LIST */
+.kv{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
+.kv:last-child{border-bottom:none}
+.kk{color:var(--text2)}
+.kv-v{font-weight:600;text-align:right}
+
+/* GUARANTEE CARD */
+.guar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.guar-card{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px;text-align:center}
+.guar-icon{height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.guar-name{font-size:12px;font-weight:600;color:var(--green)}
+/* CATALOG */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.filter-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);transition:all .15s;white-space:nowrap}
+.filter-btn:hover,.filter-btn.active{border-color:var(--fc,var(--green));background:var(--fb,var(--green-bg));color:var(--fc,var(--green))}
+.f-cnt{font-size:10px;opacity:.8}
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sol-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:16px;transition:border-color .15s}
+.sol-card:hover{border-color:var(--sc,var(--green-border));box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.sol-card-top{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+.sol-num{font-size:10px;font-weight:700;color:var(--text3);background:var(--bg);border:1px solid var(--border2);padding:1px 7px;border-radius:4px;font-variant-numeric:tabular-nums}
+.sol-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.35}
+.sol-point{display:flex;gap:5px;font-size:12px;color:var(--text2);padding:2px 0;line-height:1.4}
+.sol-dot{color:var(--sc,var(--green));flex-shrink:0;font-weight:700}
+.sol-result{margin-top:10px;background:var(--bg);border-radius:6px;padding:8px 10px}
+.sol-rl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:4px}
+.sol-ri{font-size:11px;color:var(--text2);padding:1px 0;line-height:1.4}
+/* MY PROJECTS */
+.dev-profile{background:linear-gradient(120deg,#DCFCE7,#EEF3FE);border:1px solid var(--green-border);border-radius:14px;padding:22px 26px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.dev-avatar{width:56px;height:56px;border-radius:14px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;letter-spacing:-.4px;flex-shrink:0}
+.dev-name{font-size:17px;font-weight:700;color:var(--text)}
+.dev-meta{font-size:12px;color:var(--text3);margin-top:3px}
+.dev-stats{display:flex;gap:18px;margin-left:auto}
+.ds{text-align:center}
+.ds-val{font-size:20px;font-weight:700;color:var(--green)}
+.ds-lbl{font-size:11px;color:var(--text3)}
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proj-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.proj-card:hover{border-color:var(--pc,var(--green-border));box-shadow:0 3px 12px rgba(0,0,0,.07)}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc,var(--green))}
+.proj-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.proj-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--pi-color,#64748B)}
+.proj-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.2}
+.proj-cat{font-size:11px;color:var(--text3);margin-top:3px}
+.proj-status{margin-left:auto;flex-shrink:0}
+.proj-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.proj-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pm{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+.pm-val{font-size:14px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.pm-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.proj-preview{margin:-20px -20px 14px;height:118px;overflow:hidden;border-radius:12px 12px 0 0;flex-shrink:0}
+.proj-preview svg{width:100%;height:100%;display:block}
+.proj-stack{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
+.proj-actions{display:flex;gap:8px}
+.pa-btn{flex:1;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;text-align:center;transition:all .15s}
+.pa-primary{background:var(--pc,var(--green));color:#fff}
+.pa-primary:hover{opacity:.88}
+.pa-secondary{background:var(--bg);color:var(--text2);border:1px solid var(--border2)}
+.pa-secondary:hover{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.listing-tip{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:12px 14px;font-size:13px;color:#92400E;margin-bottom:18px;line-height:1.5}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border-radius:16px;width:700px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.22);display:flex;flex-direction:column}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;position:sticky;top:0;background:var(--surface);z-index:1;border-radius:16px 16px 0 0}
+.m-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;letter-spacing:-.5px;flex-shrink:0;color:var(--mc,#334155)}
+.m-title{font-size:16px;font-weight:700;color:var(--text)}
+.m-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.m-close{margin-left:auto;width:32px;height:32px;border-radius:8px;border:none;background:var(--bg);cursor:pointer;font-size:20px;line-height:1;color:var(--text3);flex-shrink:0;transition:all .15s}
+.m-close:hover{background:var(--red-bg);color:var(--red)}
+.modal-body{padding:22px 24px}
+.ms{margin-bottom:20px}
+.ms-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.feat-row{display:flex;gap:7px;font-size:12.5px;color:var(--text2);padding:4px 0;line-height:1.45;align-items:flex-start}
+.feat-dot{color:var(--mc,var(--green));font-weight:700;flex-shrink:0;margin-top:1px}
+.stk-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.stk-tbl th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);padding:6px 10px;background:var(--bg);border:1px solid var(--border)}
+.stk-tbl td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.stk-tbl td:first-child{color:var(--text);font-weight:500;white-space:nowrap}
+.dep-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:8px}
+.dep-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.dep-meta{font-size:12px;color:var(--text3);line-height:1.5}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pr-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;text-align:center}
+.pr-plan{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.pr-price{font-size:15px;font-weight:700;color:var(--mc,var(--green))}
+.pr-feat{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.4}
+.demo-ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.demo-ch{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text);transition:all .15s;display:block}
+.demo-ch:hover{border-color:var(--mc,var(--green));background:var(--green-bg)}
+.demo-ch-icon{font-size:24px;margin-bottom:5px}
+.demo-ch-name{font-size:13px;font-weight:600}
+.demo-ch-handle{font-size:12px;color:var(--text3)}
+.demo-form{display:flex;flex-direction:column;gap:10px}
+.df-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;display:block}
+.df-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit;box-sizing:border-box}
+.df-input:focus{border-color:var(--mc,var(--green))}
+textarea.df-input{resize:vertical;min-height:80px}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-dot"></div>
+    AIGrowth
+    <div class="logo-tag">BETA</div>
+  </div>
+  <div class="topbar-right">
+    <span class="tb-badge">Рынок ИИ РФ · 2 трлн ₽</span>
+    <button class="btn-cta" onclick="setView('diagnostics')">Начать диагностику</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="nav-item active" onclick="setView('market')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/></svg>
+    Рынок
+    <span class="nav-badge">2025</span>
+  </div>
+  <div class="nav-item" onclick="setView('startups')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Стартапы
+  </div>
+  <div class="nav-item" onclick="setView('professions')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Профессии
+  </div>
+  <div class="nav-item" onclick="setView('platform')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Платформа
+  </div>
+  <div class="nav-item" onclick="setView('phases')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Фазы запуска
+  </div>
+  <div class="nav-item" onclick="setView('economics')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Экономика
+    <span class="nav-badge amber">Ключ</span>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="nav-item" onclick="setView('diagnostics')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Диагностика
+  </div>
+  <div class="nav-item" onclick="openDevAccess()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Мои проекты
+    <svg id="devLockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;margin-left:4px;opacity:.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <span class="nav-badge">4</span>
+  </div>
+  <div class="nav-item" onclick="setView('catalog')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    Каталог решений
+    <span class="nav-badge">43</span>
+  </div>
+  <div class="nav-item" onclick="setView('developers')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Разработчики
+    <span class="nav-badge">1</span>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sf-market">
+      <strong>AIGrowth</strong>
+      3016 задач · 100 профессий · 5 нейросетей
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ===== РЫНОК ===== -->
+<div class="view active" id="v-market">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Рынок ИИ в России</div>
+      <div class="ph-sub">Актуальные данные 2025</div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-title">Рынок ИИ — 2 трлн ₽. Большинство компаний ещё не зашли.</div>
+    <div class="hero-sub">60–70% российских компаний уже используют ИИ, но квалифицированных исполнителей катастрофически не хватает. AIGrowth соединяет предпринимателей с сертифицированными ИИ-разработчиками и автоматизирует весь путь от диагностики до результата.</div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-val">2 трлн ₽</div><div class="hs-label">Объём рынка ИИ, 2025</div></div>
+      <div class="hs"><div class="hs-val">+25%</div><div class="hs-label">Рост рынка в год</div></div>
+      <div class="hs"><div class="hs-val">60–70%</div><div class="hs-label">Компаний применяют ИИ</div></div>
+      <div class="hs"><div class="hs-val">12,8 трлн</div><div class="hs-label">Эффект для экономики к 2030</div></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="card-title">Прайс рынка — что заказывают прямо сейчас</div></div>
+      <div class="kv"><span class="kk">Чат-боты и ИИ-ассистенты</span><span class="kv-v">120–350 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Автоматизация отдела</span><span class="kv-v">250–700 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Ассистент по базе знаний</span><span class="kv-v">200–600 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Контент для маркетплейсов</span><span class="kv-v">от 80 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Аналитика и дашборды</span><span class="kv-v">от 80 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Обработка входящих</span><span class="kv-v">140–450 тыс. ₽</span></div>
+      <div class="kv"><span class="kk">Комплексное внедрение под ключ</span><span class="kv-v">500 тыс.–1,5 млн ₽</span></div>
+      <div class="kv"><span class="kk">Сопровождение решения</span><span class="kv-v"><span class="badge bg">30–150 тыс. ₽/мес</span></span></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-h"><div class="card-title">Спрос по направлениям</div></div>
+        <div class="prog-row"><div class="prog-l">Автоматизация</div><div class="prog-t"><div class="prog-f" style="width:95%"></div></div><div class="prog-v" style="color:var(--green)">95%</div></div>
+        <div class="prog-row"><div class="prog-l">Чат-боты</div><div class="prog-t"><div class="prog-f" style="width:90%"></div></div><div class="prog-v" style="color:var(--green)">90%</div></div>
+        <div class="prog-row"><div class="prog-l">Аналитика</div><div class="prog-t"><div class="prog-f" style="width:82%"></div></div><div class="prog-v">82%</div></div>
+        <div class="prog-row"><div class="prog-l">Контент</div><div class="prog-t"><div class="prog-f" style="width:78%"></div></div><div class="prog-v">78%</div></div>
+        <div class="prog-row"><div class="prog-l">Голос / звонки</div><div class="prog-t"><div class="prog-f" style="width:72%"></div></div><div class="prog-v">72%</div></div>
+        <div class="prog-row"><div class="prog-l">Госзаказы (44-ФЗ)</div><div class="prog-t"><div class="prog-f" style="width:60%"></div></div><div class="prog-v">60%</div></div>
+      </div>
+      <div class="card" style="background:var(--red-bg);border-color:var(--red-border)">
+        <div class="card-h"><div class="card-title" style="color:var(--red)">Правовой моат — 152-ФЗ и 41-ФЗ</div></div>
+        <div style="font-size:13px;color:#7f1d1d;line-height:1.6"><strong>152-ФЗ:</strong> данные россиян — только на серверах РФ.<br><strong>41-ФЗ:</strong> госорганы и банки не могут использовать иностранные сервисы.<br><br>Крупный заказчик <strong>физически не может</strong> взять западное решение → вынужден искать тех, кто соберёт своё. <strong>Барьер = источник заказов.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="card-title">Ключевое открытие — AI Economics Calculator</div><span class="badge bg">Точка входа платформы</span></div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7"><strong style="color:var(--green)">3016 рабочих задач × 100 профессий × 5 нейросетей</strong> → система показывает, сколько денег компания теряет без ИИ, и выдаёт 3–5 конкретных задач для делегирования + 45-минутная консультация. Именно это становится диагностическим модулем AIGrowth: клиент приходит, получает расчёт → попадает в маркетплейс → находит разработчика → запускает проект.</div>
+  <div style="margin-top:12px;font-size:10px;color:var(--text3);line-height:1.7;padding-top:10px;border-top:1px solid var(--border)">Каталог ИИ-решений: Zerocoder.</div>
+  </div>
+
+  <div class="card" style="margin-top:18px;border-left:3px solid var(--green)">
+    <div class="card-h">
+      <div class="card-title">Кейс — реальный результат</div>
+      <span class="badge bg">Онлайн-школа</span>
+    </div>
+    <div class="g3" style="margin-bottom:14px">
+      <div class="case-stat"><div class="case-val">3 ч → 20 мин</div><div class="case-lbl">Время куратора в день</div></div>
+      <div class="case-stat"><div class="case-val">85%</div><div class="case-lbl">Вопросов закрывает бот</div></div>
+      <div class="case-stat"><div class="case-val">2 мес</div><div class="case-lbl">Окупаемость</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7"><strong>Задача:</strong> онлайн-школа иностранных языков, 120 студентов. Куратор тратил 3 часа ежедневно на ответы по одним и тем же вопросам (расписание, домашние задания, технические проблемы).<br><br><strong>Решение:</strong> HR-бот адаптации на базе YandexGPT — база знаний школы + автоматические ответы по расписанию. Разработка заняла 3 недели, стоимость 120 000 ₽.<br><br><strong>Результат через 30 дней:</strong> куратор тратит 20 мин/день вместо 3 часов. Экономия — 55+ часов в месяц. Доходимость до конца курса выросла на 18% — меньше теряют студентов на середине.</div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:12px;color:var(--text3)">Москва · 2025 · Образование</div>
+      <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="setView('diagnostics')">Хочу такое же →</button>
+    </div>
+  </div>
+
+  <div id="live-tenders-wrap" style="margin-top:18px">
+    <div class="card">
+      <div class="card-h">
+        <div class="card-title">Тендеры ИИ — zakupki.gov</div>
+        <span class="badge bg" id="tenders-badge">загрузка</span>
+      </div>
+      <div id="tenders-list" style="font-size:13px;color:var(--text3)">Подключаюсь к реестру zakupki.gov...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== СТАРТАПЫ ===== -->
+<div class="view" id="v-startups">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Стартапы и направления</div>
+      <div class="ph-sub">Выбери нишу — получи расчёт потенциала дохода</div>
+    </div>
+  </div>
+
+  <div class="cat-grid" id="catGrid">
+    <div class="cat-btn" data-id="0">Чат-боты<br>и ассистенты</div>
+    <div class="cat-btn" data-id="1">Автоматизация<br>отдела</div>
+    <div class="cat-btn" data-id="2">Ассистент<br>по базе знаний</div>
+    <div class="cat-btn" data-id="3">Контент для<br>маркетплейсов</div>
+    <div class="cat-btn" data-id="4">Дашборды<br>и аналитика</div>
+    <div class="cat-btn" data-id="5">Обработка<br>входящих</div>
+    <div class="cat-btn" data-id="6">Комплексное<br>внедрение</div>
+    <div class="cat-btn" data-id="7">Сопровождение<br>решений</div>
+  </div>
+
+  <div class="calc-panel" id="calcPanel">
+    <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:14px" id="cName"></div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="card">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Ценовая вилка</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text)" id="cPrice"></div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px" id="cTime"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Сложность запуска</div>
+        <div id="cDiff" style="display:flex;gap:4px;margin-bottom:6px"></div>
+        <div style="font-size:12px;color:var(--text2)" id="cDiffLabel"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--text2);width:100px;flex-shrink:0">Проектов / мес</div>
+      <input type="range" id="projSlider" min="1" max="6" value="2">
+      <div style="font-size:14px;font-weight:700;color:var(--green);width:60px;text-align:right" id="projOut">2</div>
+    </div>
+    <div class="rev-box">
+      <div style="font-size:10px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Ежемесячная выручка</div>
+      <div style="font-size:28px;font-weight:700;color:var(--green)" id="revValue"></div>
+      <div style="font-size:12px;color:#15803d;opacity:.9;margin-top:3px" id="revSub"></div>
+    </div>
+    <div style="height:1px;background:var(--border);margin:14px 0"></div>
+    <div class="g2">
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Инструменты</div>
+        <div id="cTools" style="display:flex;flex-wrap:wrap"></div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin:10px 0 8px">Целевые клиенты</div>
+        <div style="font-size:13px;color:var(--text2)" id="cClients"></div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:8px">Как AIGrowth помогает</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6" id="cEdge"></div>
+        <div style="margin-top:10px"><span class="badge bg" id="cDemand"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ПРОФЕССИИ ===== -->
+<div class="view" id="v-professions" data-loaded="0">
+  <div class="ph">
+    <div>
+      <div class="ph-title">ИИ-профессии</div>
+      <div class="ph-sub">Три трека выхода на рынок — выбери свой</div>
+    </div>
+  </div>
+
+  <div class="g3" style="margin-bottom:20px">
+    <div class="prof-card">
+      <div class="prof-icon" style="background:var(--green-bg)">🧭</div>
+      <div class="prof-name">ИИ-бизнес-аналитик</div>
+      <div class="prof-income">120–250 тыс. ₽/мес</div>
+      <div class="prof-desc">Переводит задачи бизнеса в техзадания, считает рентабельность. Пример — Юлия Лебедева (genivai.ru): зарплата ×1,5 за 6 мес. Без программирования.</div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px"><span class="badge bg">Высокий спрос</span><span class="badge bn">Без кода</span></div>
+    </div>
+    <div class="prof-card">
+      <div class="prof-icon" style="background:var(--blue-bg)">⚙️</div>
+      <div class="prof-name">Визуальный ИИ-разработчик</div>
+      <div class="prof-income">150–400 тыс. ₽/мес</div>
+      <div class="prof-desc">Строит ботов и автоматизации без кода на Make/n8n/Botpress. 2 проекта/мес по 250к = 500к выручки.</div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px"><span class="badge bg">Дефицит кадров</span><span class="badge bn">n8n, Make</span></div>
+    </div>
+    <div class="prof-card">
+      <div class="prof-icon" style="background:var(--amber-bg)">🏢</div>
+      <div class="prof-name">Основатель ИИ-студии</div>
+      <div class="prof-income">500 тыс.–5 млн ₽/мес</div>
+      <div class="prof-desc">Команда 3–8 чел., 5–15 проектов параллельно. Genivai.ru — реальный пример за 6 мес. Выход на стабильность: 4–10 месяцев.</div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px"><span class="badge ba">Высокий порог</span><span class="badge bn">Команда</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><div class="card-title">Студия vs Промпт-инженер — сравнение двух треков</div></div>
+    <div class="tbl-wrap">
+      <table class="cmp-tbl">
+        <thead>
+          <tr>
+            <th style="background:var(--bg);color:var(--text3);width:110px">Параметр</th>
+            <th class="th-green">🏢 Своя ИИ-студия</th>
+            <th class="th-blue">🤖 Промпт-инженер</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="param-col">Суть</td><td>Берёшь проекты как подрядчик: продаёшь, ведёшь клиента, собираешь команду, отвечаешь деньгами</td><td>«Переводит» с языка бизнес-логики на язык нейросети. Проектирует и внедряет ИИ-решения руками</td></tr>
+          <tr><td class="param-col">Порог входа</td><td>Готов продавать, договариваться, рисковать. Управленческий опыт ускоряет старт в разы</td><td>Базовые навыки программирования + уверенное владение нейросетями</td></tr>
+          <tr><td class="param-col">Масштаб</td><td>Поток проектов: несколько заказов одновременно + подрядчики + сопровождение</td><td>ИИ-система под конкретную бизнес-задачу, сокращает расходы и ускоряет процессы</td></tr>
+          <tr><td class="param-col">Осваивает</td><td>Пресейл, ТЗ, договоры, найм, экономика проекта, аудит бизнеса заказчика</td><td>Python, API, RAG, векторные базы, дообучение, развёртывание LLM, оптимизация расходов</td></tr>
+          <tr><td class="param-col">Роль</td><td>Владелец: находит задачу, считает эффект, отвечает за сроки и деньги</td><td>Понимает бизнес-процессы, находит точку максимального эффекта, считает рентабельность</td></tr>
+          <tr><td class="param-col">Доход</td><td><span class="badge ba">Не ограничен · Выход 4–10 мес.</span></td><td><span class="badge bb">Стабильнее на старте · Найм, фриланс, консалтинг</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+  <div class="g2" style="margin-top:16px">
+    <div class="card">
+      <div class="card-h">
+        <div class="card-title">Вакансии ИИ — trudvsem.ru</div>
+        <span class="badge bg" id="jobs-badge">загрузка</span>
+      </div>
+      <div id="jobs-list" style="font-size:13px;color:var(--text3)">Подключаюсь к Роструду...</div>
+    </div>
+    <div class="card" style="border-color:var(--blue-border)">
+      <div class="card-h">
+        <div class="card-title">Популярные модели — HuggingFace</div>
+        <span class="badge" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">hf.co</span>
+      </div>
+      <div id="hf-list" style="font-size:13px;color:var(--text3)">Загружаю топ-5 русскоязычных моделей...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ПЛАТФОРМА ===== -->
+<div class="view" id="v-platform">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Модули платформы</div>
+      <div class="ph-sub">7 модулей, закрывающих полный цикл от диагностики до результата</div>
+    </div>
+  </div>
+
+  <div class="g2r" style="margin-bottom:0">
+    <div class="card">
+      <div class="card-h"><div class="card-title">Архитектура AIGrowth</div></div>
+      <div class="mod-row">
+        <div class="mod-num">1</div>
+        <div><div class="mod-name">ИИ-диагностика бизнеса</div><div class="mod-desc">3016 задач × 100 профессий → потери без ИИ + 3–5 рекомендаций с расчётом ROI. Точка входа клиента.</div><div style="margin-top:6px"><span class="tag">YandexGPT</span><span class="tag">GigaChat</span><span class="tag">Retool</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">2</div>
+        <div><div class="mod-name">Маркетплейс разработчиков</div><div class="mod-desc">База верифицированных исполнителей с портфолио, рейтингами, ценами. Автоподбор по задаче клиента.</div><div style="margin-top:6px"><span class="tag">Supabase</span><span class="tag">Next.js</span><span class="tag">Telegram Auth</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">3</div>
+        <div><div class="mod-name">Конструктор техзаданий</div><div class="mod-desc">ИИ генерирует ТЗ по брифу клиента. 8 шаблонов. Устраняет главную причину провала: проект без ТЗ.</div><div style="margin-top:6px"><span class="tag">Claude API</span><span class="tag">Notion API</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">4</div>
+        <div><div class="mod-name">Трекер рентабельности</div><div class="mod-desc">Клиент вводит метрики «до» → через 30 дней расчёт экономии. Мотивирует на следующий проект.</div><div style="margin-top:6px"><span class="tag">Metabase</span><span class="tag">n8n</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">5</div>
+        <div><div class="mod-name">Агрегатор тендеров (44-ФЗ / 223-ФЗ)</div><div class="mod-desc">Парсит госзакупки по ключевым словам. ИИ-генерация конкурсной документации. Уведомления в Telegram.</div><div style="margin-top:6px"><span class="tag">Zakupki API</span><span class="tag">Make</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">6</div>
+        <div><div class="mod-name">Академия AIGrowth</div><div class="mod-desc">Мини-курсы + сертификация. Выпускники → маркетплейс. Партнёрство с образовательными платформами.</div><div style="margin-top:6px"><span class="tag">GetCourse</span><span class="tag">Telegram-курс</span></div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num">7</div>
+        <div><div class="mod-name">Соответствие 152-ФЗ / 41-ФЗ</div><div class="mod-desc">Подбор решений, совместимых с российским законодательством. Локализованный стек: DeepSeek, GigaChat, YandexGPT.</div><div style="margin-top:6px"><span class="tag">GigaChat API</span><span class="tag">YandexGPT</span><span class="tag">DeepSeek</span></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-h"><div class="card-title">Бизнес-модель</div></div>
+        <div class="kv"><span class="kk">Комиссия с проекта (15–20%)</span><span class="kv-v badge bg">45–90 тыс./проект</span></div>
+        <div class="kv"><span class="kk">Подписка Про — предприниматель</span><span class="kv-v">5–15 тыс./мес</span></div>
+        <div class="kv"><span class="kk">Подписка Про — разработчик</span><span class="kv-v">3–8 тыс./мес</span></div>
+        <div class="kv"><span class="kk">Сопровождение тендеров</span><span class="kv-v">50к + 5% результата</span></div>
+        <div class="kv"><span class="kk">Курсы Академии</span><span class="kv-v">50–150 тыс.</span></div>
+        <div class="kv"><span class="kk">Лицензионная платформа</span><span class="kv-v">от 500 тыс./мес</span></div>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-h"><div class="card-title">Цели · 12 месяцев</div></div>
+        <div class="kv"><span class="kk">Проектов через платформу</span><span class="kv-v">50–100/мес</span></div>
+        <div class="kv"><span class="kk">Средний чек</span><span class="kv-v">300 тыс. ₽</span></div>
+        <div class="kv"><span class="kk">Оборот платформы</span><span class="kv-v badge bg">15–30 млн ₽/мес</span></div>
+        <div class="kv"><span class="kk">Собственная выручка</span><span class="kv-v">2,5–6 млн ₽/мес</span></div>
+      </div>
+      <div class="card" style="background:var(--green-bg);border-color:var(--green-border)">
+        <div class="card-h"><div class="card-title" style="color:var(--green)">Гарантии платформы</div></div>
+        <div class="guar-grid">
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path d="M16 10l2 2 4-4" stroke-width="2"/></svg></div><div class="guar-name">Первый заказ</div></div>
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/><path d="M12 8v4l3 3"/></svg></div><div class="guar-name">Наставник</div></div>
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="guar-name">Юрист</div></div>
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div class="guar-name">Бухгалтер</div></div>
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75"/></svg></div><div class="guar-name">Сборка команды</div></div>
+          <div class="guar-card"><div class="guar-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.75"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="guar-name">Гарантия ROI</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ФАЗЫ ===== -->
+<div class="view" id="v-phases">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Фазы запуска платформы</div>
+      <div class="ph-sub">Пошаговый план от первого бота до 100 млн ₽ годовой выручки</div>
+    </div>
+  </div>
+
+  <div class="phase-card" style="border-left-color:var(--green)">
+    <div class="phase-num">1</div>
+    <div class="phase-tag" style="background:var(--green-bg);color:var(--green)">Фаза 1</div>
+    <div class="phase-title">Проверка спроса и Telegram-воронка</div>
+    <div class="phase-period">Недели 1–4 · 20–50 тыс. ₽</div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Telegram-бот диагностики: ниша → 3 задачи для автоматизации → ссылка на консультацию</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Лендинг с калькулятором рентабельности (5 вопросов → потенциал экономии)</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>База 10 верифицированных разработчиков с подтверждёнными кейсами</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>3 пилотных проекта через платформу, комиссия 15–20%</div></div>
+    <div class="phase-footer"><span style="color:var(--text3)">Цель</span><span style="color:var(--green);font-weight:600">3 проекта · 150–200 тыс. ₽ выручки</span></div>
+  </div>
+
+  <div class="phase-card" style="border-left-color:var(--blue)">
+    <div class="phase-num">2</div>
+    <div class="phase-tag" style="background:var(--blue-bg);color:var(--blue)">Фаза 2</div>
+    <div class="phase-title">МВП маркетплейса</div>
+    <div class="phase-period">Месяцы 2–3 · 100–200 тыс. ₽</div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Личный кабинет: бриф → подбор → оплата → статус проекта</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Профили разработчиков: портфолио, рейтинг, цены</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>8 шаблонов ТЗ + ЮKassa (условное депонирование)</div></div>
+    <div class="phase-footer"><span style="color:var(--text3)">Цель</span><span style="color:var(--blue);font-weight:600">15–20 разработчиков · 500–800 тыс. ₽/мес</span></div>
+  </div>
+
+  <div class="phase-card" style="border-left-color:var(--amber)">
+    <div class="phase-num">3</div>
+    <div class="phase-tag" style="background:var(--amber-bg);color:var(--amber)">Фаза 3</div>
+    <div class="phase-title">Трекер рентабельности и управление</div>
+    <div class="phase-period">Месяцы 4–5 · 50–100 тыс. ₽</div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Канбан-доска для ведения проектов (видит клиент и разработчик)</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Трекер: метрики «до» → через 30 дней → расчёт экономии</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Автоуведомления: «ваш проект сэкономил X тыс. ₽ в этом месяце»</div></div>
+    <div class="phase-footer"><span style="color:var(--text3)">Цель</span><span style="color:var(--amber);font-weight:600">Индекс лояльности &gt;70 · 30% повторных заказов</span></div>
+  </div>
+
+  <div class="phase-card" style="border-left-color:var(--purple)">
+    <div class="phase-num">4</div>
+    <div class="phase-tag" style="background:var(--purple-bg);color:var(--purple)">Фаза 4</div>
+    <div class="phase-title">Агрегатор тендеров (44-ФЗ / 223-ФЗ)</div>
+    <div class="phase-period">Месяцы 6–8 · 80–150 тыс. ₽</div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Парсер Zakupki.gov + ИИ-скоринг тендера по соответствию компетенциям</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Автогенерация конкурсной документации. Уведомления в Telegram</div></div>
+    <div class="phase-footer"><span style="color:var(--text3)">Цель</span><span style="color:var(--purple);font-weight:600">5–10 тендеров/мес · 100–500 тыс. ₽/мес</span></div>
+  </div>
+
+  <div class="phase-card" style="border-left-color:var(--red)">
+    <div class="phase-num">5</div>
+    <div class="phase-tag" style="background:var(--red-bg);color:var(--red)">Фаза 5</div>
+    <div class="phase-title">Академия и сертификация</div>
+    <div class="phase-period">Месяцы 9–12 · 100–250 тыс. ₽</div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>3 мини-курса по трекам «Студия» и «Промпт-инженер»</div></div>
+    <div class="phase-step"><div class="phase-arrow">→</div><div>Сертификация → участие в маркетплейсе с отметкой «Проверен»</div></div>
+    <div class="phase-footer"><span style="color:var(--text3)">Цель</span><span style="color:var(--red);font-weight:600">500+ разработчиков · Годовая выручка &gt;100 млн ₽</span></div>
+  </div>
+</div>
+
+<!-- ===== ЭКОНОМИКА ===== -->
+<div class="view" id="v-economics">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Экономика разработчика</div>
+      <div class="ph-sub">Реальные цифры · Российский рынок ИИ, 2025</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:0">
+    <div>
+      <div class="econ-card">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">Экономика подрядчика — почему 40% это нормально</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Первые проекты дороги не деньгами, а долей, которую отдаёшь. Это нормально и временно — доля падает по мере роста экспертизы.</div>
+        <div style="margin-bottom:16px">
+          <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-weight:500">Новичок — первый проект</div>
+          <div class="money-flow">
+            <div class="mf-box" style="background:var(--bg);color:var(--text);border:1px solid var(--border2)">Чек: 160 тыс.</div>
+            <div class="arrow-r">→</div>
+            <div class="mf-box" style="background:var(--red-bg);color:var(--red)">Подрядчику: 65к (40%)</div>
+            <div class="arrow-r">=</div>
+            <div class="mf-box" style="background:var(--green-bg);color:var(--green);font-size:15px;font-weight:700">95 тыс. ₽</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:8px;font-weight:500">С управленческим опытом</div>
+          <div class="money-flow">
+            <div class="mf-box" style="background:var(--bg);color:var(--text);border:1px solid var(--border2)">Чек: 450 тыс.</div>
+            <div class="arrow-r">→</div>
+            <div class="mf-box" style="background:var(--amber-bg);color:var(--amber)">Подрядчику: 200к (44%)</div>
+            <div class="arrow-r">=</div>
+            <div class="mf-box" style="background:var(--green-bg);color:var(--green);font-size:15px;font-weight:700">250 тыс. ₽</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="econ-card">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">Три вещи, которые ломают старт</div>
+        <div class="mistake-item">
+          <div class="mistake-num">1</div>
+          <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Тянуть всё в одиночку</div><div style="font-size:12px;color:var(--text3);line-height:1.55">Техника, продажи, договоры, налоги — это разные профессии. Проект растягивается на 3 месяца, следующий клиент уходит.</div></div>
+        </div>
+        <div class="mistake-item">
+          <div class="mistake-num">2</div>
+          <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Брать проект без ТЗ</div><div style="font-size:12px;color:var(--text3);line-height:1.55">Правки бесконечны, маржа уходит в ноль. AIGrowth автоматически генерирует ТЗ по брифу клиента — это обязательный шаг.</div></div>
+        </div>
+        <div class="mistake-item">
+          <div class="mistake-num">3</div>
+          <div><div style="font-size:13px;font-weight:600;margin-bottom:3px">Продавать без кейсов</div><div style="font-size:12px;color:var(--text3);line-height:1.55">Аудиты и дорогие чеки появляются после 4–7 проектов. Первый заказ берут почти любой — он окупается не деньгами, а правом сказать «мы это делали».</div></div>
+        </div>
+        <div style="margin-top:12px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:12px;font-size:13px;color:var(--green);line-height:1.6"><strong>AIGrowth решает всё это:</strong> первый заказ, наставник, юрист, бухгалтер, сборка команды, гарантия окупаемости.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="econ-card" style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">Сопровождение — деньги без новых продаж</div>
+        <div style="text-align:center;margin:14px 0">
+          <div style="font-size:28px;font-weight:700;color:var(--green)">30–150 000+ ₽</div>
+          <div style="font-size:12px;color:var(--text3)">в месяц с одного клиента</div>
+        </div>
+        <div class="kv"><span class="kk">Проект сдан — решение работает</span><span class="kv-v badge bg">Платят ежемесячно</span></div>
+        <div class="kv"><span class="kk">3 клиента на сопровождении</span><span class="kv-v badge bg">База закрыта</span></div>
+        <div style="font-size:12px;color:var(--text3);margin-top:10px;line-height:1.55">Три клиента на сопровождении — и у тебя есть база, которая закрывает жизнь ещё до того, как начал искать новый проект.</div>
+      </div>
+
+      <div class="econ-card" style="margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">Реальный кейс — ИИ в техподдержке</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;line-height:1.5">Консалтинговое агентство. Внедрили техподдержку на нейросетях — бот понимает контекст клиента и историю обращений.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+          <div class="case-stat"><div class="case-val">33 сек</div><div class="case-lbl">Первый ответ</div></div>
+          <div class="case-stat"><div class="case-val">25%</div><div class="case-lbl">Покрытие тикетов</div></div>
+          <div class="case-stat"><div class="case-val">−9%</div><div class="case-lbl">Нагрузка на команду</div></div>
+        </div>
+      </div>
+
+      <div class="econ-card" style="margin-bottom:14px;border-color:var(--blue-border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:13px;font-weight:600;color:var(--text)">Курсы ЦБ РФ — сегодня</div>
+          <span id="cbr-ts" style="font-size:10px;color:var(--text3)">загрузка...</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div class="case-stat"><div class="case-val" id="cbr-usd">—</div><div class="case-lbl">USD / ₽</div></div>
+          <div class="case-stat"><div class="case-val" id="cbr-eur">—</div><div class="case-lbl">EUR / ₽</div></div>
+          <div class="case-stat"><div class="case-val" id="cbr-cny">—</div><div class="case-lbl">CNY / ₽</div></div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.5">Данные ЦБ РФ (cbr.ru) · открытый API · обновляется ежедневно</div>
+      </div>
+
+      <div class="econ-card">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">ИИ-стек из России</div>
+        <div class="kv"><span class="kk">Доступны в РФ</span><span class="kv-v" style="display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end"><span class="tag">DeepSeek</span><span class="tag">GigaChat 2 Pro</span><span class="tag">YandexGPT</span></span></div>
+        <div class="kv"><span class="kk">Локальное развёртывание</span><span class="kv-v badge bg">Данные не покидают контур</span></div>
+        <div style="font-size:12px;color:var(--text3);margin-top:10px;line-height:1.55">Универсального рецепта нет — под каждый проект стек собирается заново. Что использовать — понимаешь только на практике.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ДИАГНОСТИКА ===== -->
+<div class="view" id="v-diagnostics">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Диагностика бизнеса</div>
+      <div class="ph-sub">AI Economics Calculator · 3016 задач × 100 профессий × 5 нейросетей</div>
+    </div>
+    <button class="btn btn-primary">Запустить расчёт</button>
+  </div>
+
+  <div class="alert alert-green">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <div>Диагностика показывает, сколько денег компания теряет без ИИ, и выдаёт 3–5 конкретных задач для делегирования. Это точка входа — после расчёта клиент попадает прямо в маркетплейс разработчиков.</div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-h"><div class="card-title">Как работает диагностика</div></div>
+      <div class="phase-step" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="phase-arrow" style="color:var(--blue)">1</div><div><strong>Выбери отрасль и размер компании</strong> — система определяет применимые сценарии</div></div>
+      <div class="phase-step" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="phase-arrow" style="color:var(--blue)">2</div><div><strong>Ответь на 8–12 вопросов</strong> о текущих процессах и численности команды</div></div>
+      <div class="phase-step" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="phase-arrow" style="color:var(--blue)">3</div><div><strong>Получи персональный отчёт</strong>: потенциал экономии в рублях + приоритетные задачи для ИИ</div></div>
+      <div class="phase-step" style="padding:8px 0"><div class="phase-arrow" style="color:var(--blue)">4</div><div><strong>Свяжись с разработчиком</strong> через маркетплейс или запишись на 45-мин. консультацию</div></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-h"><div class="card-title">Результат диагностики</div></div>
+        <div class="kv"><span class="kk">Потенциал экономии</span><span class="kv-v badge bg">в рублях / мес</span></div>
+        <div class="kv"><span class="kk">Приоритетных задач для ИИ</span><span class="kv-v">3–5 шт.</span></div>
+        <div class="kv"><span class="kk">Рекомендованные инструменты</span><span class="kv-v">подобраны автоматически</span></div>
+        <div class="kv"><span class="kk">Примерный бюджет проекта</span><span class="kv-v badge bg">с вилкой цен</span></div>
+        <div class="kv"><span class="kk">Подходящие разработчики</span><span class="kv-v">топ-3 из маркетплейса</span></div>
+      </div>
+      <div class="card" style="background:var(--blue-bg);border-color:var(--blue-border)">
+        <div style="font-size:13px;font-weight:600;color:var(--blue);margin-bottom:10px">Как работает диагностика</div>
+        <div style="font-size:13px;color:#1e40af;line-height:1.6">База из 3016 задач и методология расчёта интегрированы как диагностический модуль AIGrowth — клиент получает расчёт и попадает в маркетплейс разработчиков.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="diag_form_wrap" style="margin-top:8px">
+    <div class="card" style="border-color:var(--green-border);background:linear-gradient(135deg,#DCFCE7 0%,#fff 100%)">
+      <div class="card-h">
+        <div>
+          <div class="card-title" style="font-size:16px">Запустить диагностику сейчас</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">Расскажите о бизнесе — подберём задачи и разработчика за 24 часа</div>
+        </div>
+        <span class="badge bg">Бесплатно</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label class="df-label">Ваше имя</label><input class="df-input" id="diag_name" placeholder="Иван Петров"></div>
+          <div><label class="df-label">Компания / ниша</label><input class="df-input" id="diag_company" placeholder="ООО Ромашка · интернет-торговля"></div>
+        </div>
+        <div><label class="df-label">Что хотите автоматизировать или какая задача?</label><textarea class="df-input" id="diag_task" placeholder="Например: вручную обрабатываем 200 заявок в день, половина — типовые вопросы по доставке. Хотим чат-бот." style="min-height:90px"></textarea></div>
+        <button id="diag_btn" class="btn btn-primary" style="padding:12px;font-size:14px;font-weight:600" onclick="submitDiagForm()">Отправить на диагностику →</button>
+        <div style="font-size:11px;color:var(--text3);text-align:center">или напишите напрямую: <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green);font-weight:600">@aigrowthclub</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== МОИ ПРОЕКТЫ ===== -->
+<div class="view" id="v-myprojects">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Мои продукты</div>
+      <div class="ph-sub">Готовые AI-стартапы в поиске первых пользователей и инвесторов</div>
+    </div>
+  </div>
+
+  <div class="listing-tip">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Как это работает:</strong> клиент проходит диагностику → платформа подбирает подходящего разработчика из маркетплейса → ваши проекты появляются в результатах. Заполненный профиль получает приоритет в выдаче.</span>
+  </div>
+
+  <div class="dev-profile">
+    <div class="dev-avatar">AGC</div>
+    <div>
+      <div class="dev-name">AI Growth Club</div>
+      <div class="dev-meta">Разработчик · Верифицирован ✓ · Участник с 2025 · Москва</div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <span class="badge bg">ИИ-платформы</span>
+        <span class="badge bb">Fintech</span>
+        <span class="badge bp">Корпоративный ИИ</span>
+        <span class="badge bn">Авто-аналитика</span>
+      </div>
+    </div>
+    <div class="dev-stats">
+      <div class="ds"><div class="ds-val">4</div><div class="ds-lbl">Проекта</div></div>
+      <div class="ds"><div class="ds-val" style="color:var(--amber)">Beta</div><div class="ds-lbl">Статус</div></div>
+      <div class="ds"><div class="ds-val">100%</div><div class="ds-lbl">Верификация</div></div>
+    </div>
+  </div>
+
+  <div class="proj-grid">
+
+    <!-- AutoEvo -->
+    <div class="proj-card" style="--pc:#7C3AED">
+      <div class="proj-preview"><svg viewBox="0 0 340 118" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="340" height="118" fill="#0D0A1A"/><line x1="60" y1="42" x2="160" y2="32" stroke="#7C3AED" stroke-width="1" opacity="0.45"/><line x1="160" y1="32" x2="270" y2="57" stroke="#7C3AED" stroke-width="1" opacity="0.45"/><line x1="160" y1="32" x2="200" y2="87" stroke="#7C3AED" stroke-width="0.8" opacity="0.35"/><line x1="60" y1="42" x2="100" y2="92" stroke="#7C3AED" stroke-width="0.8" opacity="0.35"/><line x1="100" y1="92" x2="200" y2="87" stroke="#7C3AED" stroke-width="0.8" opacity="0.3"/><line x1="270" y1="57" x2="312" y2="27" stroke="#A78BFA" stroke-width="0.8" opacity="0.3"/><line x1="270" y1="57" x2="302" y2="92" stroke="#7C3AED" stroke-width="0.8" opacity="0.3"/><line x1="200" y1="87" x2="302" y2="92" stroke="#7C3AED" stroke-width="0.7" opacity="0.25"/><line x1="60" y1="42" x2="22" y2="75" stroke="#6D28D9" stroke-width="0.7" opacity="0.3"/><circle cx="160" cy="32" r="13" fill="#7C3AED" opacity="0.9"/><text x="160" y="28" text-anchor="middle" fill="#EDE9FE" font-size="7" font-family="monospace" font-weight="700">BMW</text><text x="160" y="37" text-anchor="middle" fill="#C4B5FD" font-size="5.5" font-family="monospace">M3→M4→M5</text><circle cx="60" cy="42" r="10" fill="#5B21B6" opacity="0.88"/><text x="60" y="38" text-anchor="middle" fill="#DDD6FE" font-size="6.5" font-family="monospace">Tesla</text><text x="60" y="47" text-anchor="middle" fill="#A78BFA" font-size="5.5" font-family="monospace">Model3</text><circle cx="270" cy="57" r="11" fill="#6D28D9" opacity="0.88"/><text x="270" y="53" text-anchor="middle" fill="#EDE9FE" font-size="6.5" font-family="monospace">BYD</text><text x="270" y="62" text-anchor="middle" fill="#C4B5FD" font-size="5.5" font-family="monospace">Han→Seal</text><circle cx="100" cy="92" r="8" fill="#4C1D95" opacity="0.82"/><text x="100" y="88" text-anchor="middle" fill="#DDD6FE" font-size="6" font-family="monospace">Toyota</text><text x="100" y="97" text-anchor="middle" fill="#A78BFA" font-size="5.5" font-family="monospace">Camry</text><circle cx="200" cy="87" r="8" fill="#5B21B6" opacity="0.82"/><text x="200" y="83" text-anchor="middle" fill="#DDD6FE" font-size="6" font-family="monospace">Audi</text><text x="200" y="92" text-anchor="middle" fill="#A78BFA" font-size="5.5" font-family="monospace">A4→A6</text><circle cx="312" cy="27" r="7" fill="#4C1D95" opacity="0.75"/><text x="312" y="31" text-anchor="middle" fill="#C4B5FD" font-size="6" font-family="monospace">Li Auto</text><circle cx="302" cy="92" r="7" fill="#4C1D95" opacity="0.72"/><text x="302" y="97" text-anchor="middle" fill="#A78BFA" font-size="6" font-family="monospace">Hyundai</text><circle cx="22" cy="75" r="7" fill="#4C1D95" opacity="0.7"/><text x="22" y="79" text-anchor="middle" fill="#A78BFA" font-size="6" font-family="monospace">Kia</text><circle cx="132" cy="67" r="4" fill="#7C3AED" opacity="0.5"/><circle cx="230" cy="37" r="4" fill="#7C3AED" opacity="0.5"/><circle cx="330" cy="62" r="4" fill="#6D28D9" opacity="0.4"/><circle cx="18" cy="40" r="3" fill="#5B21B6" opacity="0.4"/><text x="338" y="115" text-anchor="end" fill="#7C3AED" font-size="7.5" font-family="monospace" opacity="0.75">2 065 нод · 30+ брендов · Neo4j</text></svg></div>
+      <div class="proj-head">
+        <div class="proj-icon" style="background:#EDE9FE;--pi-color:#7C3AED"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="4" r="2.5"/><circle cx="4" cy="19" r="2.5"/><circle cx="20" cy="19" r="2.5"/><line x1="10.2" y1="6.2" x2="5.8" y2="16.8"/><line x1="13.8" y1="6.2" x2="18.2" y2="16.8"/><line x1="6.5" y1="19" x2="17.5" y2="19"/></svg></div>
+        <div>
+          <div class="proj-name">AutoEvo</div>
+          <div class="proj-cat">ИИ-платформа эволюции автодизайна</div>
+        </div>
+        <div class="proj-status"><span class="badge bp">MVP</span></div>
+      </div>
+      <div class="proj-desc">Интерактивный граф эволюции автомобильного дизайна: CLIP + DINOv2 для визуального сходства, Neo4j для связей между моделями, pgvector для семантического поиска. 2 065 автомобилей, 30+ брендов — от BMW до BYD.</div>
+      <div class="proj-metrics">
+        <div class="pm"><div class="pm-val">2 065</div><div class="pm-lbl">Моделей в графе</div></div>
+        <div class="pm"><div class="pm-val">2 168</div><div class="pm-lbl">Связей</div></div>
+        <div class="pm"><div class="pm-val">30+</div><div class="pm-lbl">Брендов</div></div>
+      </div>
+      <div class="proj-stack">
+        <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">Neo4j</span><span class="tag">CLIP</span><span class="tag">DINOv2</span><span class="tag">pgvector</span>
+      </div>
+      <div class="proj-actions">
+        <a class="pa-btn pa-primary" style="--pc:#7C3AED;text-align:center" href="https://autoevo.agc-flow.online" target="_blank" rel="noopener">Открыть →</a>
+        <button class="pa-btn pa-secondary" onclick="openDetail('autoevoflow')">Подробнее</button>
+      </div>
+    </div>
+
+    <!-- OmniMind -->
+    <div class="proj-card" style="--pc:#2563EB">
+      <div class="proj-preview"><svg viewBox="0 0 340 118" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="340" height="118" fill="#060D1E"/><rect x="0" y="0" width="34" height="118" fill="#04080F"/><circle cx="17" cy="22" r="7" fill="#2563EB" opacity="0.95"/><rect x="10" y="36" width="14" height="2" rx="1" fill="#1E3A5F"/><rect x="10" y="44" width="14" height="2" rx="1" fill="#1E3A5F"/><rect x="10" y="52" width="14" height="2" rx="1" fill="#1E3A5F"/><circle cx="17" cy="66" r="5" fill="#1D4ED8" opacity="0.65"/><circle cx="17" cy="82" r="5" fill="#1E3A5F" opacity="0.5"/><circle cx="17" cy="98" r="5" fill="#1E3A5F" opacity="0.35"/><rect x="34" y="0" width="1" height="118" fill="#0F1F3D" opacity="0.8"/><text x="43" y="13" fill="#93C5FD" font-size="7.5" font-family="sans-serif" font-weight="600">OmniMind Dashboard</text><rect x="276" y="4" width="56" height="13" rx="6.5" fill="#2563EB" opacity="0.8"/><text x="304" y="13" text-anchor="middle" fill="white" font-size="6.5" font-family="sans-serif" font-weight="600">AI Active</text><rect x="43" y="18" width="118" height="24" rx="5" fill="#0A1628"/><circle cx="56" cy="30" r="5.5" fill="#2563EB" opacity="0.85"/><rect x="66" y="23" width="55" height="5" rx="2.5" fill="#1E3A5F"/><rect x="66" y="31" width="38" height="4" rx="2" fill="#1E3A5F" opacity="0.7"/><rect x="148" y="22" width="12" height="10" rx="5" fill="#EF4444" opacity="0.88"/><text x="154" y="29.5" text-anchor="middle" fill="white" font-size="6" font-family="monospace" font-weight="700">3</text><rect x="43" y="46" width="118" height="24" rx="5" fill="#0A1628"/><circle cx="56" cy="58" r="5.5" fill="#7C3AED" opacity="0.8"/><rect x="66" y="51" width="46" height="5" rx="2.5" fill="#1E3A5F"/><rect x="66" y="59" width="65" height="4" rx="2" fill="#1E3A5F" opacity="0.7"/><rect x="43" y="74" width="118" height="24" rx="5" fill="#0A1628"/><circle cx="56" cy="86" r="5.5" fill="#059669" opacity="0.8"/><rect x="66" y="79" width="42" height="5" rx="2.5" fill="#1E3A5F"/><rect x="66" y="87" width="62" height="4" rx="2" fill="#1E3A5F" opacity="0.7"/><rect x="43" y="100" width="118" height="14" rx="4" fill="#04080F"/><text x="50" y="110" fill="#1E3A5F" font-size="6.5" font-family="monospace">Whisper · Redis · Qdrant · n8n · 15+ int</text><rect x="170" y="18" width="162" height="36" rx="7" fill="#0A1628"/><text x="180" y="30" fill="#64748B" font-size="6.5" font-family="sans-serif">Входящих</text><text x="180" y="42" fill="#F1F5F9" font-size="13" font-family="monospace" font-weight="700">247</text><text x="236" y="30" fill="#64748B" font-size="6.5" font-family="sans-serif">Задач ИИ</text><text x="236" y="42" fill="#60A5FA" font-size="13" font-family="monospace" font-weight="700">18</text><text x="289" y="30" fill="#64748B" font-size="6.5" font-family="sans-serif">Векторов</text><text x="289" y="42" fill="#A78BFA" font-size="11" font-family="monospace" font-weight="700">4.2k</text><rect x="170" y="60" width="48" height="14" rx="7" fill="#1D4ED8" opacity="0.75"/><text x="194" y="70" text-anchor="middle" fill="#BFDBFE" font-size="6.5" font-family="sans-serif">Comm Hub</text><rect x="222" y="60" width="46" height="14" rx="7" fill="#5B21B6" opacity="0.75"/><text x="245" y="70" text-anchor="middle" fill="#DDD6FE" font-size="6.5" font-family="sans-serif">Meeting AI</text><rect x="272" y="60" width="58" height="14" rx="7" fill="#065F46" opacity="0.75"/><text x="301" y="70" text-anchor="middle" fill="#A7F3D0" font-size="6.5" font-family="sans-serif">Task Orch</text><rect x="170" y="80" width="162" height="36" rx="7" fill="#0A1628"/><text x="180" y="92" fill="#64748B" font-size="6.5" font-family="sans-serif">Memory Layer</text><rect x="176" y="97" width="50" height="10" rx="5" fill="#0F2441"/><text x="201" y="104.5" text-anchor="middle" fill="#93C5FD" font-size="6" font-family="monospace">RAG + Qdrant</text><rect x="230" y="97" width="44" height="10" rx="5" fill="#1F2937"/><text x="252" y="104.5" text-anchor="middle" fill="#9CA3AF" font-size="6" font-family="monospace">24 модуля</text><rect x="278" y="97" width="50" height="10" rx="5" fill="#0F2441"/><text x="303" y="104.5" text-anchor="middle" fill="#60A5FA" font-size="6" font-family="monospace">Real-time</text></svg></div>
+      <div class="proj-head">
+        <div class="proj-icon" style="background:#DBEAFE;--pi-color:#2563EB"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3m9-9h-3M6 12H3"/><path d="M18.36 5.64l-2.12 2.12M7.76 16.24l-2.12 2.12M18.36 18.36l-2.12-2.12M7.76 7.76 5.64 5.64"/></svg></div>
+        <div>
+          <div class="proj-name">OmniMind</div>
+          <div class="proj-cat">Корпоративный AI-оркестратор / личная AI-ОС</div>
+        </div>
+        <div class="proj-status"><span class="badge bb">Beta</span></div>
+      </div>
+      <div class="proj-desc">«Второй мозг и второй сотрудник» — поглощает все коммуникации, совещания, задачи и кодовую базу. Маршрутизирует через ИИ, выдаёт важное через единый дашборд. Communication Hub, Meeting AI, Task Orchestrator, Memory Layer.</div>
+      <div class="proj-metrics">
+        <div class="pm"><div class="pm-val">24</div><div class="pm-lbl">Модуля</div></div>
+        <div class="pm"><div class="pm-val">15+</div><div class="pm-lbl">Интеграций</div></div>
+        <div class="pm"><div class="pm-val">Real-time</div><div class="pm-lbl">Обработка</div></div>
+      </div>
+      <div class="proj-stack">
+        <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">Qdrant</span><span class="tag">n8n</span><span class="tag">Redis</span><span class="tag">Whisper</span>
+      </div>
+      <div class="proj-actions">
+        <a class="pa-btn pa-primary" style="--pc:#2563EB;text-align:center" href="https://omnimind.agc-flow.online" target="_blank" rel="noopener">Открыть →</a>
+        <button class="pa-btn pa-secondary" onclick="openDetail('omnimindflow')">Подробнее</button>
+      </div>
+    </div>
+
+    <!-- RiseCore -->
+    <div class="proj-card" style="--pc:#16A34A">
+      <div class="proj-preview"><svg viewBox="0 0 340 118" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="rcfGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16A34A" stop-opacity="0.45"/><stop offset="100%" stop-color="#16A34A" stop-opacity="0.03"/></linearGradient></defs><rect width="340" height="118" fill="#071510"/><line x1="28" y1="25" x2="28" y2="102" stroke="#14532D" stroke-width="0.5" opacity="0.6"/><line x1="28" y1="102" x2="322" y2="102" stroke="#14532D" stroke-width="0.5" opacity="0.6"/><line x1="28" y1="25" x2="322" y2="25" stroke="#14532D" stroke-width="0.4" opacity="0.3"/><line x1="28" y1="51" x2="322" y2="51" stroke="#14532D" stroke-width="0.4" opacity="0.3"/><line x1="28" y1="76" x2="322" y2="76" stroke="#14532D" stroke-width="0.4" opacity="0.3"/><path d="M28,96 L68,88 L108,78 L148,65 L188,52 L228,38 L268,26 L308,18 L308,102 L28,102 Z" fill="url(#rcfGrad)"/><polyline points="28,96 68,88 108,78 148,65 188,52 228,38 268,26 308,18" fill="none" stroke="#16A34A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="308" cy="18" r="4.5" fill="#16A34A"/><circle cx="268" cy="26" r="3.5" fill="#16A34A" opacity="0.75"/><circle cx="228" cy="38" r="3.5" fill="#16A34A" opacity="0.75"/><circle cx="148" cy="65" r="3" fill="#16A34A" opacity="0.6"/><text x="3" y="28" fill="#166534" font-size="6.5" font-family="monospace">100k</text><text x="3" y="54" fill="#166534" font-size="6.5" font-family="monospace">75k</text><text x="3" y="79" fill="#166534" font-size="6.5" font-family="monospace">50k</text><text x="3" y="104" fill="#166534" font-size="6.5" font-family="monospace">25k</text><text x="28" y="113" fill="#166534" font-size="6.5" font-family="monospace">Янв</text><text x="103" y="113" fill="#166534" font-size="6.5" font-family="monospace">Мар</text><text x="183" y="113" fill="#166534" font-size="6.5" font-family="monospace">Май</text><text x="263" y="113" fill="#166534" font-size="6.5" font-family="monospace">Июл</text><text x="37" y="12" fill="#4ADE80" font-size="8" font-family="sans-serif" font-weight="600">RiseCore · SaaS Growth Analytics</text><rect x="192" y="52" width="62" height="36" rx="7" fill="#0A2318"/><text x="223" y="64" text-anchor="middle" fill="#86EFAC" font-size="6.5" font-family="sans-serif">MRR Growth</text><text x="223" y="78" text-anchor="middle" fill="#4ADE80" font-size="13" font-family="monospace" font-weight="700">+47%</text><rect x="258" y="52" width="62" height="36" rx="7" fill="#0A2318"/><text x="289" y="64" text-anchor="middle" fill="#86EFAC" font-size="6.5" font-family="sans-serif">Клиентов</text><text x="289" y="78" text-anchor="middle" fill="#4ADE80" font-size="13" font-family="monospace" font-weight="700">1.2k</text><rect x="192" y="92" width="128" height="20" rx="5" fill="#071510"/><text x="256" y="105" text-anchor="middle" fill="#166534" font-size="6.5" font-family="monospace">Gemini 2.0 · YandexGPT · Prisma · LibSQL</text></svg></div>
+      <div class="proj-head">
+        <div class="proj-icon" style="background:#DCFCE7;--pi-color:#16A34A"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+        <div>
+          <div class="proj-name">RiseCore</div>
+          <div class="proj-cat">AI SaaS-маркетинг для роста проектов</div>
+        </div>
+        <div class="proj-status"><span class="badge bg">Активен</span></div>
+      </div>
+      <div class="proj-desc">ИИ-инструменты для маркетинга и роста SaaS-продуктов: автоматизация воронок, генерация контента, аналитика конверсий. Fullstack Next.js с встроенным AI-движком для малого и среднего бизнеса.</div>
+      <div class="proj-metrics">
+        <div class="pm"><div class="pm-val">AI</div><div class="pm-lbl">Движок</div></div>
+        <div class="pm"><div class="pm-val">SaaS</div><div class="pm-lbl">Модель</div></div>
+        <div class="pm"><div class="pm-val">B2B</div><div class="pm-lbl">Сегмент</div></div>
+      </div>
+      <div class="proj-stack">
+        <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">SQLite</span><span class="tag">Tailwind</span><span class="tag">OpenAI</span>
+      </div>
+      <div class="proj-actions">
+        <a class="pa-btn pa-primary" style="text-align:center" href="https://risecore.agc-flow.online" target="_blank" rel="noopener">Открыть →</a>
+        <button class="pa-btn pa-secondary" onclick="openDetail('risecoreflow')">Подробнее</button>
+      </div>
+    </div>
+
+    <!-- WinExtra -->
+    <div class="proj-card" style="--pc:#CA8A04">
+      <div class="proj-preview"><svg viewBox="0 0 340 118" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><rect width="340" height="118" fill="#080806"/><rect width="340" height="22" fill="#100F0A"/><text x="9" y="14.5" fill="#CA8A04" font-size="7.5" font-family="monospace" font-weight="700">WinExtra</text><text x="98" y="14.5" fill="#57534E" font-size="7" font-family="monospace">BTC/USDT</text><text x="143" y="14.5" fill="#4ADE80" font-size="7.5" font-family="monospace" font-weight="600">42 530.00</text><text x="190" y="14.5" fill="#4ADE80" font-size="7" font-family="monospace">▲2.1%</text><rect x="256" y="5" width="76" height="13" rx="6.5" fill="#CA8A04"/><text x="294" y="14" text-anchor="middle" fill="#1C1917" font-size="7" font-family="monospace" font-weight="700">AI Rating: 87</text><line x1="9" y1="27" x2="9" y2="105" stroke="#292524" stroke-width="0.5"/><line x1="9" y1="105" x2="125" y2="105" stroke="#292524" stroke-width="0.5"/><line x1="9" y1="40" x2="125" y2="40" stroke="#292524" stroke-width="0.4" opacity="0.4"/><line x1="9" y1="60" x2="125" y2="60" stroke="#292524" stroke-width="0.4" opacity="0.4"/><line x1="9" y1="80" x2="125" y2="80" stroke="#292524" stroke-width="0.4" opacity="0.4"/><line x1="18" y1="38" x2="18" y2="100" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="14" y="56" width="8" height="32" fill="#4ADE80" rx="1" opacity="0.88"/><line x1="30" y1="45" x2="30" y2="99" stroke="#F87171" stroke-width="0.8" opacity="0.55"/><rect x="26" y="53" width="8" height="30" fill="#F87171" rx="1" opacity="0.88"/><line x1="42" y1="33" x2="42" y2="96" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="38" y="43" width="8" height="40" fill="#4ADE80" rx="1" opacity="0.88"/><line x1="54" y1="36" x2="54" y2="93" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="50" y="46" width="8" height="34" fill="#4ADE80" rx="1" opacity="0.85"/><line x1="66" y1="41" x2="66" y2="97" stroke="#F87171" stroke-width="0.8" opacity="0.55"/><rect x="62" y="49" width="8" height="31" fill="#F87171" rx="1" opacity="0.85"/><line x1="78" y1="43" x2="78" y2="94" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="74" y="51" width="8" height="28" fill="#4ADE80" rx="1" opacity="0.8"/><line x1="90" y1="29" x2="90" y2="88" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="86" y="37" width="8" height="42" fill="#4ADE80" rx="1" opacity="0.88"/><line x1="102" y1="33" x2="102" y2="93" stroke="#F87171" stroke-width="0.8" opacity="0.55"/><rect x="98" y="41" width="8" height="36" fill="#F87171" rx="1" opacity="0.85"/><line x1="114" y1="26" x2="114" y2="86" stroke="#4ADE80" stroke-width="0.8" opacity="0.55"/><rect x="110" y="34" width="8" height="40" fill="#4ADE80" rx="1" opacity="0.88"/><polyline points="14,74 26,70 38,62 50,57 62,63 74,60 86,51 98,55 110,47" fill="none" stroke="#CA8A04" stroke-width="1.5" opacity="0.75"/><rect x="133" y="25" width="198" height="88" rx="6" fill="#100F0A"/><text x="143" y="37" fill="#CA8A04" font-size="7.5" font-family="monospace" font-weight="600">Сигналы Telegram</text><line x1="140" y1="40" x2="328" y2="40" stroke="#292524" stroke-width="0.5"/><text x="305" y="37" text-anchor="middle" fill="#78716C" font-size="6.5" font-family="monospace">Score</text><rect x="140" y="45" width="6" height="6" rx="1.5" fill="#4ADE80"/><text x="152" y="52" fill="#D6D3D1" font-size="7" font-family="monospace">BTC LONG · 42 200 → 43 000</text><text x="305" y="52" text-anchor="middle" fill="#CA8A04" font-size="7" font-family="monospace" font-weight="600">87</text><rect x="140" y="57" width="6" height="6" rx="1.5" fill="#4ADE80"/><text x="152" y="64" fill="#D6D3D1" font-size="7" font-family="monospace">ETH LONG · 2 450 → 2 520</text><text x="305" y="64" text-anchor="middle" fill="#CA8A04" font-size="7" font-family="monospace" font-weight="600">79</text><rect x="140" y="69" width="6" height="6" rx="1.5" fill="#F87171"/><text x="152" y="76" fill="#D6D3D1" font-size="7" font-family="monospace">SOL SHORT · 135.0 → 128.0</text><text x="305" y="76" text-anchor="middle" fill="#EF4444" font-size="7" font-family="monospace" font-weight="600">34</text><rect x="140" y="81" width="6" height="6" rx="1.5" fill="#4ADE80"/><text x="152" y="88" fill="#D6D3D1" font-size="7" font-family="monospace">MATIC LONG · 0.88 → 0.95</text><text x="305" y="88" text-anchor="middle" fill="#CA8A04" font-size="7" font-family="monospace" font-weight="600">72</text><rect x="140" y="93" width="6" height="6" rx="1.5" fill="#4ADE80"/><text x="152" y="100" fill="#D6D3D1" font-size="7" font-family="monospace">XRP LONG · 0.52 → 0.57</text><text x="305" y="100" text-anchor="middle" fill="#CA8A04" font-size="7" font-family="monospace" font-weight="600">81</text><text x="140" y="110" fill="#44403C" font-size="6.5" font-family="monospace">42+ тикеров · 9 бирж · MT5 · ЮKassa · backtesting</text></svg></div>
+      <div class="proj-head">
+        <div class="proj-icon" style="background:#FEF9C3;--pi-color:#CA8A04"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="5" y1="3" x2="5" y2="21"/><rect x="3" y="7" width="4" height="9" rx="1"/><line x1="12" y1="3" x2="12" y2="21"/><rect x="10" y="5" width="4" height="11" rx="1"/><line x1="19" y1="3" x2="19" y2="21"/><rect x="17" y="9" width="4" height="7" rx="1"/></svg></div>
+        <div>
+          <div class="proj-name">WinExtra</div>
+          <div class="proj-cat">Агрегатор торговых сигналов с AI Rating</div>
+        </div>
+        <div class="proj-status"><span class="badge ba">Beta</span></div>
+      </div>
+      <div class="proj-desc">Агрегирует торговые сигналы из Telegram, оценивает по AI Rating Score (0–100, 9 факторов), подключает к 9 биржам для авто-торговли. 42+ тикера, backtesting, paper trading, 3 платёжных шлюза включая ЮKassa.</div>
+      <div class="proj-metrics">
+        <div class="pm"><div class="pm-val">42+</div><div class="pm-lbl">Тикеров</div></div>
+        <div class="pm"><div class="pm-val">9</div><div class="pm-lbl">Бирж</div></div>
+        <div class="pm"><div class="pm-val">AI</div><div class="pm-lbl">Rating Score</div></div>
+      </div>
+      <div class="proj-stack">
+        <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">PostgreSQL</span><span class="tag">MT5</span><span class="tag">ЮKassa</span><span class="tag">Telethon</span>
+      </div>
+      <div class="proj-actions">
+        <a class="pa-btn pa-primary" style="--pc:#CA8A04;text-align:center" href="https://winextra.agc-flow.online" target="_blank" rel="noopener">Открыть →</a>
+        <button class="pa-btn pa-secondary" onclick="openDetail('winextraflow')">Подробнее</button>
+      </div>
+    </div>
+
+  </div><!-- /proj-grid -->
+
+  <div class="card" style="margin-top:18px;background:var(--green-bg);border-color:var(--green-border)">
+    <div class="card-h"><div class="card-title" style="color:var(--green)">Следующий шаг — заполнить листинги полностью</div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;font-size:13px">
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-weight:700">1.</span><div>Добавить кейс с метриками клиента (ROI, экономия времени)</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-weight:700">2.</span><div>Указать ценовую вилку проекта и модель оплаты</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-weight:700">3.</span><div>Загрузить скриншоты или видео-демо (2–3 мин.)</div></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--green);font-weight:700">4.</span><div>Пройти верификацию — приоритет в выдаче ×3</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== КАТАЛОГ ===== -->
+<div class="view" id="v-catalog">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Каталог ИИ-решений</div>
+      <div class="ph-sub">43 решения · Фильтруй по направлению — бери в работу</div>
+    </div>
+    <span class="badge bg" id="catCount">43 решения</span>
+  </div>
+  <div class="filter-row">
+    <button class="filter-btn active" data-cat="all" style="--fc:var(--text);--fb:var(--bg)">Все · 43</button>
+    <button class="filter-btn" data-cat="sales" style="--fc:var(--green);--fb:var(--green-bg)">Продажи · 10</button>
+    <button class="filter-btn" data-cat="support" style="--fc:var(--blue);--fb:var(--blue-bg)">Поддержка · 6</button>
+    <button class="filter-btn" data-cat="ops" style="--fc:var(--purple);--fb:var(--purple-bg)">Операции · 7</button>
+    <button class="filter-btn" data-cat="hr" style="--fc:#0891B2;--fb:#ECFEFF">HR · 2</button>
+    <button class="filter-btn" data-cat="docs" style="--fc:var(--amber);--fb:var(--amber-bg)">Документы · 6</button>
+    <button class="filter-btn" data-cat="industry" style="--fc:var(--red);--fb:var(--red-bg)">Отраслевые · 2</button>
+    <button class="filter-btn" data-cat="edu" style="--fc:#4F46E5;--fb:#EEF2FF">Образование · 2</button>
+    <button class="filter-btn" data-cat="open" style="--fc:#0891b2;--fb:#ecfeff">Open Source · 8</button>
+  </div>
+  <div class="sol-grid" id="solGrid"></div>
+  <div id="gh-live-wrap" style="display:none;margin-top:18px">
+    <div class="card" style="border-color:#a5f3fc">
+      <div class="card-h">
+        <div class="card-title">Живые репозитории — GitHub Stars</div>
+        <span class="badge" style="background:#ecfeff;color:#0891b2;border:1px solid #a5f3fc" id="gh-badge">загрузка</span>
+      </div>
+      <div id="gh-list" style="font-size:13px;color:var(--text3)">Подключаюсь к GitHub API...</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="m-icon" id="mIcon"></div>
+      <div style="min-width:0">
+        <div class="m-title" id="mTitle"></div>
+        <div class="m-sub" id="mSub"></div>
+      </div>
+      <button class="m-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<!-- ===== РАЗРАБОТЧИКИ ===== -->
+<div class="view" id="v-developers">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Команда платформы</div>
+      <div class="ph-sub">Основатель AIGrowth — пишите напрямую</div>
+    </div>
+    <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="text-decoration:none">Связаться →</a>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <!-- Основатель платформы -->
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div style="display:flex;align-items:flex-start;gap:16px">
+        <div class="dev-avatar" style="background:var(--green);flex-shrink:0">AGC</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+            <div class="dev-name">AI Growth Club</div>
+            <span class="badge bg">Основатель ✓</span>
+          </div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Основатель AIGrowth · 4 активных проекта</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px">Корпоративные ИИ-платформы, торговые системы с ML-сигналами, автоматизация бизнеса. Полный цикл — от диагностики до запуска.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px">
+            <span class="tag">FastAPI</span><span class="tag">Next.js</span><span class="tag">Neo4j</span><span class="tag">YandexGPT</span><span class="tag">Telegram</span>
+          </div>
+          <div class="g3" style="margin-bottom:12px">
+            <div class="case-stat" style="padding:8px"><div class="case-val" style="font-size:16px">AutoEvo</div><div class="case-lbl">Граф эволюции авто</div></div>
+            <div class="case-stat" style="padding:8px"><div class="case-val" style="font-size:16px">OmniMind</div><div class="case-lbl">AI-оркестратор</div></div>
+            <div class="case-stat" style="padding:8px"><div class="case-val" style="font-size:16px">WinExtra</div><div class="case-lbl">Торговые сигналы</div></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="font-size:12px;padding:7px 16px;text-decoration:none">Написать →</a>
+            <button class="btn btn-secondary" style="font-size:12px" onclick="setView('myprojects')">Смотреть проекты</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA: Стать партнёром -->
+    <div class="card" style="border:2px dashed var(--border);text-align:center;padding:32px 24px">
+      <div style="font-size:28px;margin-bottom:12px">🤝</div>
+      <div style="font-weight:600;font-size:15px;margin-bottom:6px;color:var(--text)">Присоединитесь как партнёр-разработчик</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:360px;margin-left:auto;margin-right:auto">Маркетплейс разработчиков формируется. Если вы делаете ИИ-проекты для бизнеса — свяжитесь с нами.</div>
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+        <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="text-decoration:none;font-size:13px">Подать заявку →</a>
+        <button class="btn btn-secondary" style="font-size:13px" onclick="setView('diagnostics')">Пройти диагностику</button>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /v-developers -->
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+var VIEWS=['market','startups','professions','platform','phases','economics','diagnostics','myprojects','catalog','developers'];
+function setView(name){
+  VIEWS.forEach(function(v){
+    var el=document.getElementById('v-'+v);
+    if(el) el.classList.remove('active');
+  });
+  var el=document.getElementById('v-'+name);
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active')});
+  var map={market:0,startups:1,professions:2,platform:3,phases:4,economics:5,diagnostics:6,myprojects:7,catalog:8,developers:9};/* developers остаётся в индексе, секция переименована */
+  var items=document.querySelectorAll('.nav-item');
+  if(map[name]!==undefined && items[map[name]]) items[map[name]].classList.add('active');
+}
+
+var CATS=[
+  {name:'Чат-боты и ассистенты поддержки',min:120000,max:350000,time:'4–8 недель',diff:1,tools:['n8n','Botpress','ManyChat','YandexGPT'],clients:'Интернет-торговля, медицина, сервисы, общепит',edge:'Самый высокий спрос. 80% бизнеса ещё не внедрили. Шаблоны за 1 день.',demand:'Спрос: очень высокий'},
+  {name:'Автоматизация отдела (продажи, поддержка, документы)',min:250000,max:700000,time:'6–12 недель',diff:3,tools:['Make','n8n','amoCRM','Bitrix24'],clients:'Средний бизнес: торговля, производство, услуги',edge:'Большие чеки + рекуррентное сопровождение. Помогаем с ТЗ и подбором специалиста.',demand:'Спрос: высокий'},
+  {name:'ИИ-ассистент по базе знаний компании',min:200000,max:600000,time:'5–10 недель',diff:3,tools:['Claude API','GPT-4','Notion','Chroma DB'],clients:'Банки, юрфирмы, клиники, ИТ-компании',edge:'Высокий чек. Верификация разработчиков с опытом RAG-архитектур.',demand:'Спрос: растущий'},
+  {name:'Контент для маркетплейсов (карточки, описания, SEO)',min:80000,max:200000,time:'2–4 недели',diff:1,tools:['YandexGPT','GPT-4','Wildberries API','Ozon API'],clients:'Продавцы WB, Ozon, AliExpress, Яндекс.Маркет',edge:'Самый низкий порог входа. Первый заказ за 1–2 недели.',demand:'Спрос: очень высокий'},
+  {name:'Дашборды и ИИ-аналитика',min:80000,max:250000,time:'3–6 недель',diff:2,tools:['Metabase','Power BI','Retool','n8n'],clients:'Розница, логистика, финансы, HR',edge:'Регулярное сопровождение 30–100к/мес. Трекер рентабельности показывает клиенту результат.',demand:'Спрос: высокий'},
+  {name:'Обработка входящих (звонки, заявки, документы)',min:140000,max:450000,time:'4–8 недель',diff:3,tools:['SberSalute','Яндекс SpeechKit','Make','1С'],clients:'Колл-центры, недвижимость, автодилеры, страхование',edge:'Госзаказы до 2+ млн. Агрегатор тендеров находит заказы автоматически.',demand:'Спрос: высокий + госзаказы'},
+  {name:'Комплексное внедрение ИИ под ключ',min:500000,max:1500000,time:'12–20 недель',diff:5,tools:['Полный стек','Архитектор решений','Команда 3–5 чел.'],clients:'Средний и крупный бизнес, корпорации',edge:'Платформа обеспечивает команду под проект и управление сроками.',demand:'Спрос: ограниченный, высокий чек'},
+  {name:'Сопровождение готового ИИ-решения',min:30000,max:150000,time:'Ежемесячно',diff:2,tools:['n8n','Telegram','Metabase','Мониторинг'],clients:'Все категории после сдачи проекта',edge:'Регулярный доход без новых продаж. 3 клиента = финансовая база.',demand:'Спрос: стабильный, регулярный'}
+];
+
+function fmt(n){return(n/1000).toFixed(0)+' тыс. ₽'}
+var selIdx=null;
+
+document.querySelectorAll('.cat-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var id=+this.dataset.id;
+    document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('sel')});
+    this.classList.add('sel');
+    selIdx=id;
+    showCat(id);
+    document.getElementById('calcPanel').classList.add('on');
+  });
+});
+
+function showCat(id){
+  var c=CATS[id];
+  document.getElementById('cName').textContent=c.name;
+  document.getElementById('cPrice').textContent=fmt(c.min)+' — '+fmt(c.max);
+  document.getElementById('cTime').textContent='Среднее время: '+c.time;
+  var diff=document.getElementById('cDiff');
+  diff.innerHTML='';
+  for(var i=1;i<=5;i++){
+    var d=document.createElement('div');
+    d.style.cssText='width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:3px;background:'+(i<=c.diff?'var(--amber)':'var(--bg)');
+    diff.appendChild(d);
+  }
+  var labels=['','Очень низкая','Низкая','Средняя','Высокая','Очень высокая'];
+  document.getElementById('cDiffLabel').textContent='Сложность: '+labels[c.diff];
+  var tools=document.getElementById('cTools');
+  tools.innerHTML='';
+  c.tools.forEach(function(t){var s=document.createElement('span');s.className='tag';s.textContent=t;tools.appendChild(s)});
+  document.getElementById('cClients').textContent=c.clients;
+  document.getElementById('cEdge').textContent=c.edge;
+  document.getElementById('cDemand').textContent=c.demand;
+  updateRev(id);
+}
+
+function updateRev(id){
+  if(id===null)return;
+  var proj=+document.getElementById('projSlider').value;
+  document.getElementById('projOut').textContent=proj;
+  var c=CATS[id];
+  var avg=Math.round((c.min+c.max)/2);
+  var rev=avg*proj;
+  document.getElementById('revValue').textContent=(rev/1000).toFixed(0)+' тыс. ₽ / мес';
+  var comm=Math.round(rev*0.175/1000);
+  document.getElementById('revSub').textContent='Комиссия AIGrowth 17,5%: '+comm+' тыс. ₽ · Ваш доход: '+Math.round(rev*0.825/1000)+' тыс. ₽';
+}
+
+document.getElementById('projSlider').addEventListener('input',function(){if(selIdx!==null)updateRev(selIdx)});
+
+// ========== МОДАЛЬНЫЕ ОКНА ==========
+var PD={
+  autoevoflow:{name:'AutoEvo',icon:'AEF',iconBg:'#EDE9FE',cat:'ИИ-платформа эволюции автодизайна',status:'MVP Stage 1',color:'#7C3AED',
+    desc:'AI-платформа трекинга дизайн-ДНК автомобилей через vision-embeddings (CLIP, DINOv2) и граф эволюции (Neo4j). 2 065 моделей, 30+ брендов — от BMW до BYD. Интерактивная визуализация через Cytoscape.js с лайаутами perf и track.',
+    feats:['Граф эволюции: 2 065 нод, 2 168 рёбер, 8 типов связей','CLIP (ViT-L-14) + DINOv2 — визуальное сходство моделей','pgvector — семантический поиск по характеристикам','Neo4j 5 — граф связей между моделями и брендами','Layout perf: разгон 0–100 × топ-скорость (A777 данные)','Layout track: Нюрбургринг × Top Gear время','YOLOv8 + SAM — детекция и сегментация кузовных элементов','Telegram Publisher — автопубликация историй новых авто'],
+    stack:[['Backend','FastAPI 0.115.5 + Python 3.11'],['Graph DB','Neo4j 5 + APOC'],['Vector DB','PostgreSQL 16 + pgvector 0.3.6'],['ML','PyTorch 2.5.1 + CLIP (ViT-L-14) + DINOv2'],['Vision','YOLOv8 + SAM (Segment Anything)'],['LLM','YandexGPT Pro (primary) / OpenAI GPT-4o (vision)'],['Cache','Redis 7 + Celery 5.4.0'],['Frontend','Next.js 14.2.5 + TypeScript 5 + Cytoscape.js 3.30.1']],
+    deploy:[{name:'Vercel (фронтенд)',meta:'Root dir: frontend · Build: next build · Данные статические в public/data · env не требуются для фронта'},{name:'VPS с Docker (бэкенд)',meta:'Docker Compose (11 сервисов): PostgreSQL+pgvector, Neo4j 5, Redis, MinIO, ML-inference (CLIP/DINOv2), Celery-worker, Crawler, Prometheus, Grafana · Требуется 8+ GB RAM, GPU опционально'}]},
+  omnimindflow:{name:'OmniMind',icon:'OMF',iconBg:'#DBEAFE',cat:'Корпоративный AI-оркестратор / личная AI-ОС',status:'Production-ready',color:'#2563EB',
+    desc:'«Второй мозг и второй сотрудник» — поглощает коммуникации (Slack, Gmail, Telegram, Teams), совещания (Whisper), задачи (Jira/Notion/Linear) и кодовую базу, маршрутизирует через ИИ, выдаёт важное через единый дашборд.',
+    feats:['Communication Hub — Slack, Gmail, Telegram, Discord, Teams','Meeting AI — Whisper транскрипция → саммари → Jira/Notion','Task Orchestrator — Jira/Notion/Linear/GitHub синхронизация','AI Coding Assistant — PR review, architecture suggestions, doc gen','Memory Layer — Qdrant vector store, namespaced per company','AI Router — выбор оптимального LLM по cost/latency/privacy','Automation Engine — event-driven workflows через n8n','Calendar Orchestrator — коллизии, deep work блоки, рескедулинг'],
+    stack:[['Backend','FastAPI 0.115.6 + Python 3.12'],['Vector store','Qdrant 1.7.4'],['Cache/Events','Redis 7 + Redis Streams'],['Transcription','OpenAI Whisper + pydub'],['Automation','n8n (self-hosted)'],['Messaging','Slack SDK 3.34 + python-telegram-bot 21'],['Encryption','AES-256 (Fernet) · structlog'],['Frontend','Next.js 14.2.21 + Tailwind + shadcn/ui + SWR 2.3.0'],['Payments','YooKassa'],['Proxy','Traefik v3.0']],
+    deploy:[{name:'Cloudflare Pages (frontend)',meta:'Root dir: frontend · Build: npx @cloudflare/next-on-pages · Edge runtime · wrangler.toml готов'},{name:'VPS с Docker (backend)',meta:'Docker Compose (8 сервисов): PostgreSQL, Redis, Qdrant 1.7.4, n8n, FastAPI-api, worker, Next.js-web, Traefik v3 · Railway не подходит (многосервисный) · Render или VPS рекомендуется · .gitignore защищает documents/, .env, *.db'}]},
+  risecoreflow:{name:'RiseCore',icon:'RCF',iconBg:'#DCFCE7',cat:'AI SaaS-маркетинг для роста проектов',status:'Active',color:'#16A34A',
+    desc:'Growth-платформа для SaaS-проектов: AI-контент (6 пресетов), Growth Suite (5 модулей), Launch Playbook (39 пунктов по 3 фазам), Outreach CRM с pipeline 6 статусов. AI Engine: Gemini 2.0 Flash → YandexGPT → Claude Opus fallback.',
+    feats:['Content Editor v2: AI improve (6 пресетов) + 3-platform adapter','Growth Suite: experiments / campaigns / competitors / ICPs / roadmap','Launch Playbook: 39 пунктов по 3 фазам, auto-seed при запуске','Outreach CRM: pipeline 6 статусов, 4 типа контактов, шаблоны питчей','Реферальная система: автокредитование +7 дней Pro при регистрации','Notifications API + NotificationBell · PWA (manifest + Service Worker)','AI Engine: Gemini 2.0 Flash → YandexGPT (fallback) → Claude Opus → Mock','Тарифы Free / Pro / Agency с plan enforcement в middleware'],
+    stack:[['Framework','Next.js 16.2.6 App Router + Turbopack + TypeScript'],['Database','SQLite (better-sqlite3) / PostgreSQL (prod)'],['Auth','JWT HTTP-only cookie + bcryptjs + jose'],['AI','Gemini 2.0 Flash / YandexGPT / Claude Opus fallback'],['Styling','Tailwind · Volcanic Indigo (#07060d bg, #6366f1 accent)'],['PWA','manifest.json + sw.js + meta в layout.tsx']],
+    pricing:[{plan:'Free',price:'0 ₽/мес',feat:'Базовый функционал'},{plan:'Pro',price:'2 990 ₽/мес',feat:'Все модули + AI без лимита'},{plan:'Agency',price:'9 990 ₽/мес',feat:'Мультиаккаунт + приоритет'}],
+    deploy:[{name:'Vercel',meta:'Next.js 16 fullstack · better-sqlite3 / Prisma + LibSQL (Turso) в prod · AI_KEY + DATABASE_URL в env · нет отдельного бэкенда'}]},
+  winextraflow:{name:'WinExtra',icon:'WEF',iconBg:'#FEF9C3',cat:'Агрегатор торговых сигналов с AI Rating',status:'Production-ready',color:'#CA8A04',
+    desc:'Агрегирует торговые сигналы из Telegram-каналов, оценивает по AI Rating Score (0–100, 9 факторов), подключает к 9 биржам для авто-торговли. 42+ тикера, backtesting, paper trading, copy trading, 3 платёжных шлюза.',
+    feats:['AI Rating Score — ИИ-рейтинг сигналов по 9 факторам (0–100)','42+ тикера: MOEX, Crypto, Forex, US/EU Stocks','9 бирж: Binance, Bybit, OKX, Kraken, MT5, IBKR, Tinkoff, Exante, Demo','Backtesting + Paper trading + Copy trading','10 внешних API: MOEX ISS, Binance, Yahoo Finance, CoinGecko, CBR','3 платёжных шлюза: ЮKassa (RUB) + CryptoCloud (USDT/BTC) + Prodamus','Telethon 1.38.1 — парсинг Telegram-каналов с сигналами','Recharts — аналитика и визуализация сигналов'],
+    stack:[['Backend','FastAPI 0.115.6 + Python 3.12 + asyncpg 0.30.0'],['Database','PostgreSQL 16 + Redis 7'],['LLM','YandexGPT Pro · DeepSeek Reasoner · GPT-4o (deep analysis)'],['Telegram','Telethon 1.38.1'],['Charts','Recharts'],['Payments','ЮKassa + CryptoCloud + Prodamus'],['Frontend','Next.js 14 + TypeScript + Tailwind CSS'],['Deploy','Docker Compose + Nginx · Ubuntu 22.04']],
+    deploy:[{name:'Hetzner EU (рекомендуется)',meta:'CX22 · 2 vCPU, 4GB RAM, 40GB SSD · €4.50/мес · 5 Docker-сервисов требуют минимум 2GB RAM · Ubuntu 22.04 · Лучшее соотношение цена/качество'},{name:'Serverspace RU',meta:'2 vCPU, 4GB RAM, 50GB SSD · ~1 400 руб/мес · Ubuntu 22.04 · Порты 80, 443, 22 · Минимум 4GB для стабильной работы'},{name:'Timeweb Cloud',meta:'2 vCPU, 4GB RAM, 40GB NVMe · ~1 200 руб/мес · 1GB RAM недостаточно (PostgreSQL + Next.js + FastAPI + Redis + Nginx)'}]}
+};
+
+function openDetail(id){
+  var p=PD[id]; if(!p)return;
+  document.getElementById('mIcon').textContent=p.icon;
+  document.getElementById('mIcon').style.background=p.iconBg;
+  document.getElementById('mTitle').textContent=p.name;
+  document.getElementById('mSub').textContent=p.cat+' · '+p.status;
+  var h='';
+  h+='<div class="ms"><div class="ms-title">О проекте</div><p style="font-size:13.5px;color:var(--text2);line-height:1.75;margin:0">'+p.desc+'</p></div>';
+  h+='<div class="ms"><div class="ms-title">Возможности</div><div class="feat-grid">';
+  h+=p.feats.map(function(f){return'<div class="feat-row" style="--mc:'+p.color+'"><span class="feat-dot">›</span><span>'+f+'</span></div>'}).join('');
+  h+='</div></div>';
+  h+='<div class="ms"><div class="ms-title">Технологический стек</div><table class="stk-tbl"><tr><th>Слой</th><th>Технология</th></tr>';
+  h+=p.stack.map(function(r){return'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'}).join('');
+  h+='</table></div>';
+  if(p.pricing){
+    h+='<div class="ms"><div class="ms-title">Тарифы</div><div class="price-grid">';
+    h+=p.pricing.map(function(pr){return'<div class="pr-card" style="--mc:'+p.color+'"><div class="pr-plan">'+pr.plan+'</div><div class="pr-price">'+pr.price+'</div><div class="pr-feat">'+pr.feat+'</div></div>'}).join('');
+    h+='</div></div>';
+  }
+  h+='<div class="ms"><div class="ms-title">Деплой</div>';
+  h+=p.deploy.map(function(d){return'<div class="dep-card"><div class="dep-name">'+d.name+'</div><div class="dep-meta">'+d.meta+'</div></div>'}).join('');
+  h+='</div>';
+  h+='<div style="display:flex;gap:8px;padding-top:4px">';
+  h+='<button class="pa-btn pa-primary" style="--pc:'+p.color+';padding:10px 20px;font-size:13px" onclick="switchToDemo(\''+id+'\')">Получить доступ</button>';
+  h+='<button class="pa-btn pa-secondary" style="padding:10px 20px;font-size:13px" onclick="closeModal()">Закрыть</button>';
+  h+='</div>';
+  document.getElementById('mBody').innerHTML=h;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openDemo(id){
+  var p=PD[id]; if(!p)return;
+  document.getElementById('mIcon').textContent=p.icon;
+  document.getElementById('mIcon').style.background=p.iconBg;
+  document.getElementById('mTitle').textContent=p.name;
+  document.getElementById('mSub').textContent=p.cat;
+  var statusColor=p.status==='Production-ready'?'#16A34A':p.status==='Active'?'#2563EB':'#CA8A04';
+  var statusBg=p.status==='Production-ready'?'#DCFCE7':p.status==='Active'?'#DBEAFE':'#FEF9C3';
+  var featsHtml=p.feats.slice(0,5).map(function(f){
+    return '<div style="display:flex;gap:8px;font-size:13px;line-height:1.5;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="'+p.color+'" stroke-width="2.5" style="width:13px;height:13px;flex-shrink:0;margin-top:3px"><polyline points="20 6 9 17 4 12"/></svg><span style="color:var(--text)">'+f+'</span></div>';
+  }).join('');
+  var stackRows=p.stack.slice(0,4).map(function(s){
+    return '<div style="display:flex;gap:8px;align-items:baseline;font-size:12.5px;margin-bottom:4px"><span style="color:var(--muted);width:90px;flex-shrink:0">'+s[0]+'</span><span style="color:var(--text)">'+s[1]+'</span></div>';
+  }).join('');
+  var h='<div style="margin-bottom:14px"><span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:'+statusBg+';color:'+statusColor+'">'+p.status+'</span></div>';
+  h+='<div style="font-size:13.5px;color:var(--text);line-height:1.7;margin-bottom:18px">'+p.desc+'</div>';
+  h+='<div style="margin-bottom:18px"><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Возможности</div>'+featsHtml+'</div>';
+  h+='<div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:20px"><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Стек</div>'+stackRows+'</div>';
+  h+='<div><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Как участвовать</div>';
+  h+='<div style="display:flex;gap:10px;margin-bottom:16px">';
+  h+='<a href="https://t.me/aigrowthclub" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .15s" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="this.style.borderColor=\'\'">';
+  h+='<svg viewBox="0 0 24 24" fill="none" stroke="'+p.color+'" stroke-width="1.8" style="width:22px;height:22px"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>';
+  h+='<span style="font-size:12px;font-weight:600;color:var(--text)">Telegram</span><span style="font-size:11px;color:var(--muted)">@aigrowthclub</span></a>';
+  h+='<a href="mailto:hi@aigrowth.club" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .15s" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="this.style.borderColor=\'\'">';
+  h+='<svg viewBox="0 0 24 24" fill="none" stroke="'+p.color+'" stroke-width="1.8" style="width:22px;height:22px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  h+='<span style="font-size:12px;font-weight:600;color:var(--text)">Email</span><span style="font-size:11px;color:var(--muted)">hi@aigrowth.club</span></a>';
+  h+='</div>';
+  h+='<div class="demo-form">';
+  h+='<div><label class="df-label">Ваше имя</label><input class="df-input" id="df_name" placeholder="Иван Иванов"></div>';
+  h+='<div><label class="df-label">Цель</label><select class="df-input" id="df_role" style="cursor:pointer"><option value="">Выберите...</option><option value="user">Хочу попробовать продукт</option><option value="investor">Рассматриваю инвестиции / партнёрство</option><option value="beta">Хочу в бета-группу</option><option value="other">Другое</option></select></div>';
+  h+='<div><label class="df-label">Сообщение (необязательно)</label><textarea class="df-input" id="df_task" rows="3" placeholder="Расскажите о себе или задайте вопрос..."></textarea></div>';
+  h+='<button class="pa-btn pa-primary" style="--pc:'+p.color+';padding:11px;font-size:13.5px" onclick="submitDemo(\''+id+'\')">Отправить запрос →</button>';
+  h+='</div></div>';
+  document.getElementById('mBody').innerHTML=h;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function switchToDemo(id){closeModal();setTimeout(function(){openDemo(id)},80);}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
+var DEV_PASSWORD='agc2025';
+var DEV_SESSION_KEY='dev_auth';
+function openDevAccess(){
+  if(sessionStorage.getItem(DEV_SESSION_KEY)==='1'){setView('myprojects');return;}
+  var ov=document.getElementById('devAuthOverlay');
+  ov.style.display='flex';
+  setTimeout(function(){var inp=document.getElementById('devAuthInput');if(inp)inp.focus();},50);
+  document.getElementById('devAuthError').style.display='none';
+  document.getElementById('devAuthInput').value='';
+  var lock=document.getElementById('devLockIcon');
+  if(lock) lock.style.opacity='.5';
+}
+function closeDevAuth(){
+  document.getElementById('devAuthOverlay').style.display='none';
+}
+function submitDevAuth(){
+  var val=document.getElementById('devAuthInput').value;
+  var err=document.getElementById('devAuthError');
+  if(val===DEV_PASSWORD){
+    sessionStorage.setItem(DEV_SESSION_KEY,'1');
+    document.getElementById('devAuthOverlay').style.display='none';
+    var lock=document.getElementById('devLockIcon');
+    if(lock) lock.style.opacity='0';
+    setView('myprojects');
+  } else {
+    err.style.display='block';
+    var inp=document.getElementById('devAuthInput');
+    inp.value='';
+    inp.focus();
+    inp.style.borderColor='#EF4444';
+    setTimeout(function(){inp.style.borderColor='';},1200);
+  }
+}
+function submitDemo(id){
+  var name=document.getElementById('df_name').value;
+  var task=document.getElementById('df_task').value;
+  var budget=document.getElementById('df_budget')?document.getElementById('df_budget').value:'';
+  if(!name||!task){alert('Заполните имя и описание задачи');return;}
+  var mBody=document.getElementById('mBody');
+  mBody.innerHTML='<div style="text-align:center;padding:40px 20px"><div style="font-size:32px;margin-bottom:12px">⏳</div><div style="font-size:15px;color:var(--text2)">Отправляем заявку...</div></div>';
+  fetch('https://formsubmit.co/ajax/victorysd.95@gmail.com',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      _subject:'AIGrowth — новая заявка: '+name,
+      name:name, task:task, budget:budget, project:id||'diagnostics',
+      _template:'table'
+    })
+  }).then(function(){
+    mBody.innerHTML='<div style="text-align:center;padding:40px 20px">'
+      +'<div style="width:56px;height:56px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
+      +'<div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">Заявка отправлена!</div>'
+      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу в <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green)">@aigrowthclub</a></div>'
+      +'<button class="pa-btn pa-secondary" style="margin-top:24px;padding:10px 24px;font-size:13px" onclick="closeModal()">Закрыть</button>'
+      +'</div>';
+  }).catch(function(){
+    mBody.innerHTML='<div style="text-align:center;padding:40px 20px">'
+      +'<div style="width:56px;height:56px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
+      +'<div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">Заявка принята!</div>'
+      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Напишите нам напрямую в <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green)">@aigrowthclub</a> — ответим быстрее всего там.</div>'
+      +'<button class="pa-btn pa-secondary" style="margin-top:24px;padding:10px 24px;font-size:13px" onclick="closeModal()">Закрыть</button>'
+      +'</div>';
+  });
+}
+function submitDiagForm(){
+  var name=document.getElementById('diag_name').value;
+  var company=document.getElementById('diag_company').value;
+  var task=document.getElementById('diag_task').value;
+  if(!name||!task){alert('Заполните имя и описание задачи');return;}
+  var btn=document.getElementById('diag_btn');
+  btn.disabled=true; btn.textContent='Отправляем...';
+  fetch('https://formsubmit.co/ajax/victorysd.95@gmail.com',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      _subject:'AIGrowth — заявка на диагностику от '+name,
+      name:name, company:company, task:task, source:'diagnostics-page',
+      _template:'table'
+    })
+  }).then(function(){
+    document.getElementById('diag_form_wrap').innerHTML='<div style="text-align:center;padding:28px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px">'
+      +'<div style="font-size:40px;margin-bottom:12px">✅</div>'
+      +'<div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px">Заявка принята</div>'
+      +'<div style="font-size:13px;color:#15803d;line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу: <a href="https://t.me/aigrowthclub" style="color:var(--green);font-weight:600">@aigrowthclub</a></div></div>';
+  }).catch(function(){
+    document.getElementById('diag_form_wrap').innerHTML='<div style="text-align:center;padding:28px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px">'
+      +'<div style="font-size:40px;margin-bottom:12px">✅</div>'
+      +'<div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px">Спасибо!</div>'
+      +'<div style="font-size:13px;color:#15803d">Напишите в <a href="https://t.me/aigrowthclub" style="color:var(--green);font-weight:600">@aigrowthclub</a></div></div>';
+  });
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+
+// ========== КАТАЛОГ ==========
+var CAT_CFG={
+  sales:{label:'Продажи',c:'var(--green)',bg:'var(--green-bg)'},
+  support:{label:'Поддержка',c:'var(--blue)',bg:'var(--blue-bg)'},
+  ops:{label:'Операции',c:'var(--purple)',bg:'var(--purple-bg)'},
+  hr:{label:'HR',c:'#0891B2',bg:'#ECFEFF'},
+  docs:{label:'Документы',c:'var(--amber)',bg:'var(--amber-bg)'},
+  industry:{label:'Отраслевые',c:'var(--red)',bg:'var(--red-bg)'},
+  edu:{label:'Образование',c:'#4F46E5',bg:'#EEF2FF'},
+  open:{label:'Open Source',c:'#0891b2',bg:'#ecfeff'}
+};
+var SOLUTIONS=[
+  {id:1,cat:'industry',name:'Автоматизированное меню с рекомендациями',pts:['Анализирует предпочтения и историю заказов','Предлагает персонализированные блюда','Учитывает диетические ограничения'],res:['Рост среднего чека','Выше удовлетворённость клиентов']},
+  {id:2,cat:'ops',name:'Подготовка отчётов для корпоративных клиентов',pts:['Получает данные из CRM и таблиц','Создаёт текстовые отчёты по шаблонам','Генерирует визуализации через Notion, Excel'],res:['Экономия времени сотрудников','Автоматизация рутины']},
+  {id:3,cat:'docs',name:'Анализ юридических документов',pts:['Проверяет на неточности и несогласованности','Выдаёт предложения по улучшению структуры','Обновляет шаблоны по изменениям в правилах'],res:['Меньше времени на предпроверку документов','Помощь юристу в рутинной работе']},
+  {id:4,cat:'edu',name:'Генератор учебных планов и тестов',pts:['Создаёт тесты и контрольные материалы','Формирует планы под уровень учеников','Предлагает дополнительные задания по темам'],res:['Выше качество учебных материалов','Экономия времени преподавателя']},
+  {id:5,cat:'sales',name:'Анализ конкурентов',pts:['Извлекает открытые данные о конкурентах','Сравнивает предложения в виде таблиц','Даёт рекомендации по сильным и слабым сторонам'],res:['Быстрое понимание конкурентной среды','Идеи для доработки офферов']},
+  {id:6,cat:'support',name:'Юридическая поддержка — чат-бот',pts:['Отвечает на типовые вопросы клиентов','Даёт ссылки на нормативные документы','Направляет сложные запросы специалисту'],res:['Экономия времени на типовых ответах','Автоматизация первичной поддержки']},
+  {id:7,cat:'industry',name:'ИИ-подбор туров для турагентства',pts:['Подбирает туры под бюджет, даты и пожелания','Отвечает на вопросы про визы и перелёты','Готовит подборку и передаёт менеджеру'],res:['Менеджер ведёт больше клиентов','Ответ клиенту за минуты, а не на следующий день']},
+  {id:8,cat:'edu',name:'ИИ-тьютор для онлайн-школы',pts:['Проверяет домашние задания с обратной связью','Отвечает на вопросы по материалу круглосуточно','Показывает куратору отстающих студентов'],res:['Один куратор ведёт больше студентов','Выше доходимость до конца курса']},
+  {id:9,cat:'sales',name:'Подбор товара по параметрам в каталоге',pts:['Понимает запрос обычными словами без фильтров','Находит позиции и объясняет разницу между ними','Предлагает аналоги, если нужного нет в наличии'],res:['Рост конверсии в корзину','Сложные товары продаются без консультанта']},
+  {id:10,cat:'ops',name:'Автотранскрибация и саммари совещаний',pts:['Расшифровывает аудиозаписи через Whisper/API','Выделяет ключевые тезисы, задачи и сроки','Формирует саммари для рассылки участникам'],res:['Экономия времени на расшифровке','Выше прозрачность командной работы']},
+  {id:11,cat:'sales',name:'Повышение конверсии на сайте',pts:['Анализирует поведение пользователей','Идентифицирует проблемные зоны интерфейса','Генерирует варианты A/B тестов'],res:['Рост числа заявок','Снижение оттока и рост эффективности рекламы']},
+  {id:12,cat:'sales',name:'Персонализация email-рассылок',pts:['Сегментирует аудиторию по поведению и истории заказов','Генерирует тексты писем под каждый сегмент','Автоматизирует отправку через no-code платформы'],res:['Рост открываемости и переходов','Увеличение продаж, снижение отписок']},
+  {id:13,cat:'sales',name:'SEO-оптимизация описаний товаров',pts:['Генерирует описания карточек с ключевыми словами','Учитывает специфику ниши и алгоритмы поиска','Запускается массово по целым категориям'],res:['Повышение видимости в поиске','Экономия времени контент-менеджеров']},
+  {id:14,cat:'support',name:'Анализ отзывов и автоответы',pts:['Сортирует отзывы по эмоциональной окраске','Генерирует релевантные ответы в дружелюбном тоне','Уведомляет менеджера при негативных отзывах'],res:['Повышение лояльности клиентов','Рост репутации бренда']},
+  {id:15,cat:'support',name:'Классификация и обработка писем в поддержку',pts:['Распознаёт тему и классифицирует обращение','Передаёт запрос в нужный отдел','Генерирует шаблон ответа или FAQ по теме'],res:['Рост скорости и качества поддержки','Экономия времени сотрудников']},
+  {id:16,cat:'support',name:'Online-консультант на сайт',pts:['Отвечает на вопросы клиентов в режиме 24/7','Помогает с выбором, расчётом и навигацией','Переключает диалог на менеджера при необходимости'],res:['Рост числа заявок','Снижение нагрузки на поддержку']},
+  {id:17,cat:'sales',name:'Массовая генерация контента для блога и СММ',pts:['Генерирует темы и черновики статей по запросу','Адаптирует стиль под формат блога или соцсети','Добавляет CTA и SEO-блоки по шаблону'],res:['Рост трафика','Стабильный выпуск контента без нагрузки на редакцию']},
+  {id:18,cat:'docs',name:'Расчёт смет и стоимости работ',pts:['Собирает смету по запросу из прайса и нормативов','Учитывает объёмы, материалы и сроки','Готовит документ в фирменном виде для отправки'],res:['Смета за час вместо трёх дней','Меньше ошибок в расчётах и потерянной маржи']},
+  {id:19,cat:'ops',name:'ИИ-ассистент по базе знаний компании',pts:['Собирает регламенты и документы в единую базу','Отвечает сотрудникам со ссылкой на первоисточник','Обновляет ответы при изменении документов'],res:['Меньше времени на поиск информации','Быстрый ввод новичков в работу']},
+  {id:20,cat:'docs',name:'Распознавание и оцифровка документов',pts:['Считывает счета, накладные и акты с фото/скана','Извлекает реквизиты, суммы и даты','Выгружает данные в учётную систему или таблицу'],res:['Экономия часов ручного ввода','Меньше ошибок в цифрах']},
+  {id:21,cat:'support',name:'Голосовой бот для приёма заявок',pts:['Принимает входящие звонки и уточняет запрос','Записывает на услугу или фиксирует заявку в CRM','Переводит на менеджера при нетиповом вопросе'],res:['Ни одного пропущенного звонка','Приём заявок в нерабочее время']},
+  {id:22,cat:'ops',name:'Речевая аналитика звонков отдела продаж',pts:['Расшифровывает разговоры менеджеров с клиентами','Проверяет соблюдение скрипта, находит возражения','Ставит оценку звонку и собирает сводку для РОПа'],res:['Рост конверсии отдела продаж','Понятные точки роста у каждого менеджера']},
+  {id:23,cat:'hr',name:'Первичный скрининг кандидатов',pts:['Разбирает отклики и сопоставляет с требованиями','Задаёт кандидату уточняющие вопросы в чате','Формирует короткий список с обоснованием по каждому'],res:['Сокращение времени на подбор','Единый стандарт оценки кандидатов']},
+  {id:24,cat:'hr',name:'HR-бот для адаптации сотрудников',pts:['Ведёт новичка по плану первых недель','Отвечает на вопросы про отпуска и внутренние правила','Собирает обратную связь для отдела кадров'],res:['Быстрый выход сотрудника на результат','Меньше увольнений на испытательном сроке']},
+  {id:25,cat:'ops',name:'Прогноз спроса и планирование закупок',pts:['Анализирует историю продаж и сезонность','Предлагает объём закупки по каждой позиции','Предупреждает о риске дефицита или залёживания'],res:['Меньше денег заморожено на складе','Товар не заканчивается в пик спроса']},
+  {id:26,cat:'docs',name:'Мониторинг тендеров и подготовка заявок',pts:['Отслеживает закупки по кодам, регионам и суммам','Оценивает шанс на победу и отсеивает нерелевантное','Готовит черновик заявки по шаблону заказчика'],res:['Подходящие закупки не теряются','Рост числа поданных заявок']},
+  {id:27,cat:'ops',name:'Дашборд с ИИ-аналитикой для руководителя',pts:['Собирает данные из CRM и рекламных кабинетов','Объясняет словами, что изменилось за период и почему','Присылает сводку в мессенджер по расписанию'],res:['Решения на цифрах, а не на ощущениях','Проблемы видно раньше, чем они стали дорогими']},
+  {id:28,cat:'sales',name:'Генерация визуала для карточек товаров',pts:['Делает изображения товара в разных сценах без съёмки','Готовит инфографику по шаблону бренда','Выпускает варианты под разные площадки'],res:['Экономия на фотосессиях','Выше кликабельность карточки']},
+  {id:29,cat:'sales',name:'Подготовка коммерческих предложений',pts:['Собирает КП по запросу клиента из каталога и прайса','Считает спецификацию и подставляет условия сделки','Оформляет в фирменном шаблоне компании'],res:['КП за минуты вместо рабочего дня','Менеджер успевает закрывать больше сделок']},
+  {id:30,cat:'support',name:'Модерация пользовательского контента',pts:['Проверяет комментарии и заявки на запрещённое','Помечает спорные случаи для ручной проверки','Ведёт журнал решений для разбора конфликтов'],res:['Чистая площадка без круглосуточной модерации','Снижение репутационных и юридических рисков']},
+  {id:31,cat:'ops',name:'Тренажёр продаж для персонала',pts:['ИИ играет роль клиента с характером и возражениями','Менеджер отрабатывает диалог сколько нужно раз','Система разбирает каждый заход и показывает ошибки'],res:['Обучение без потери живых клиентов','Единый стандарт разговора в отделе']},
+  {id:32,cat:'docs',name:'Проверка контрагентов перед сделкой',pts:['Собирает данные из открытых реестров и судебной практики','Отмечает риски: долги, иски, массовый адрес','Готовит справку с выводом для лица, принимающего решение'],res:['Меньше сделок с проблемными партнёрами','Проверка за минуты вместо дня работы юриста']},
+  {id:33,cat:'sales',name:'Мониторинг упоминаний и репутации бренда',pts:['Отслеживает упоминания в медиа и на форумах','Определяет тональность и выделяет опасные сюжеты','Присылает оповещение, когда тема начинает расходиться'],res:['Реакция на негатив до того, как он вырос','Материал для PR и продуктовых решений']},
+  {id:34,cat:'sales',name:'Локализация контента для новых рынков',pts:['Переводит сайт и документы с учётом терминологии','Адаптирует формулировки под культуру и нормы рынка','Держит единый глоссарий бренда во всех языках'],res:['Выход на новый рынок без бюро переводов','Единая терминология во всех материалах']},
+  {id:35,cat:'docs',name:'Контроль платежей и поиск аномалий',pts:['Сверяет платежи с договорами, счетами и бюджетом','Находит дубли, нетиповые суммы и подозрительные операции','Формирует список расхождений для финансиста'],res:['Деньги не уходят дважды','Меньше ручной сверки в таблицах']},
+  {id:36,cat:'open',name:'n8n — визуальный оркестратор автоматизаций',pts:['400+ интеграций из коробки: CRM, Telegram, Email, ERP','Собственный сервер — данные не покидают контур клиента','Код-узлы для нестандартной логики на JavaScript/Python'],res:['Замена Zapier/Make без абонплаты','Весь AI-пайплайн в одном месте'],src:'github.com/n8n-io/n8n · Apache 2.0 · 50k+ ⭐'},
+  {id:37,cat:'open',name:'LocalAI — локальный сервер вывода ИИ-моделей',pts:['Запускает LLM локально: LLaMA, Mistral, DeepSeek, Phi','OpenAI-совместимый API — переключение без правки кода','ARM и x86, работает на CPU без GPU'],res:['152-ФЗ: данные не выходят из контура','Нулевые расходы на токены после развёртывания'],src:'github.com/mudler/LocalAI · MIT · 27k+ ⭐'},
+  {id:38,cat:'open',name:'Flowise — визуальный конструктор LLM-цепочек',pts:['Drag&drop сборка RAG-систем, агентов, чат-ботов','Деплой в один клик: Docker, Railway, Render','Встроенный API-эндпоинт для вставки на сайт клиента'],res:['Прототип за 2 часа вместо 2 недель','Легко объяснить клиенту — он видит схему'],src:'github.com/FlowiseAI/Flowise · Apache 2.0 · 35k+ ⭐'},
+  {id:39,cat:'open',name:'Dify — платформа ИИ-приложений',pts:['Оркестрация агентов, RAG, fine-tune в одном интерфейсе','On-premise развёртывание с управлением данными','SDK для встройки в любое приложение'],res:['Полный стек от идеи до продакшна','Команда видит аналитику разговоров'],src:'github.com/langgenius/dify · Apache 2.0 · 60k+ ⭐'},
+  {id:40,cat:'open',name:'Open WebUI — интерфейс для локальных моделей',pts:['Работает с Ollama и OpenAI-совместимыми API','Загрузка документов, голос, функции-плагины','Multi-user с разграничением прав'],res:['Клиент получает ChatGPT-опыт на своих данных','Развёртывается за 5 минут через Docker'],src:'github.com/open-webui/open-webui · MIT · 50k+ ⭐'},
+  {id:41,cat:'open',name:'Langfuse — наблюдаемость LLM-приложений',pts:['Трейсинг запросов: цена, токены, задержка по сессиям','Сравнение версий промптов через A/B эксперименты','SDK для Python, JS, LangChain, LlamaIndex'],res:['Клиент видит ROI в цифрах, а не словах','Быстрое нахождение галлюцинаций в продакшне'],src:'github.com/langfuse/langfuse · MIT · 8k+ ⭐'},
+  {id:42,cat:'open',name:'AnythingLLM — всё в одном AI-рабочем столе',pts:['Чат с документами, сайтами, YouTube, Notion','Мультиагентные цепочки без кода','Поддержка локальных моделей и OpenAI'],res:['Корпоративная база знаний за один вечер','Работает на ноутбуке без интернета'],src:'github.com/Mintplex-Labs/anything-llm · MIT · 30k+ ⭐'},
+  {id:43,cat:'open',name:'Perplexica — AI-поиск с открытым кодом',pts:['Поиск с цитированием источников как Perplexity.ai','Работает с локальными Ollama-моделями','Режимы: Web, Academic, YouTube, Reddit'],res:['Ресёрч конкурентов без утечки запросов','Корпоративный поиск по инсайдерским данным'],src:'github.com/ItzCrazyKns/Perplexica · MIT · 19k+ ⭐'}
+];
+
+function renderCatalog(cat){
+  var grid=document.getElementById('solGrid');
+  if(!grid)return;
+  var list=cat==='all'?SOLUTIONS:SOLUTIONS.filter(function(s){return s.cat===cat});
+  var cc=document.getElementById('catCount');
+  if(cc)cc.textContent=list.length+' решений';
+  grid.innerHTML=list.map(function(s){
+    var cfg=CAT_CFG[s.cat]||CAT_CFG.sales;
+    return '<div class="sol-card" style="--sc:'+cfg.c+'">'+
+      '<div class="sol-card-top">'+
+      '<span class="sol-num">#'+s.id+'</span>'+
+      '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.c+';border:1px solid '+cfg.c+'44">'+cfg.label+'</span>'+
+      '</div>'+
+      '<div class="sol-name">'+s.name+'</div>'+
+      s.pts.map(function(p){return '<div class="sol-point"><span class="sol-dot">›</span><span>'+p+'</span></div>'}).join('')+
+      '<div class="sol-result"><div class="sol-rl">Результат</div>'+
+      s.res.map(function(r){return '<div class="sol-ri">· '+r+'</div>'}).join('')+
+      '</div>'+
+      (s.src?'<div style="margin-top:8px;font-size:10px;color:#94a3b8;border-top:1px solid var(--border);padding-top:6px">⚙ '+s.src+'</div>':'')+
+      '</div>';
+  }).join('');
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+    this.classList.add('active');
+    renderCatalog(this.dataset.cat);
+    toggleGhWidget(this.dataset.cat);
+  });
+});
+renderCatalog('all');
+toggleGhWidget('all');
+
+// Загружаем открытые API при старте
+loadTenders();
+loadHuggingFace();
+loadTrudvsem();
+
+// ===== ОТКРЫТЫЕ API =====
+
+// GitHub — ai repos
+function loadGitHub(){
+  var el=document.getElementById('gh-list');
+  var badge=document.getElementById('gh-badge');
+  if(!el)return;
+  fetch('https://api.github.com/search/repositories?q=topic:llm+language:python+stars:>1000&sort=stars&per_page=6')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if(!d.items||!d.items.length){el.textContent='Нет данных';return}
+      if(badge)badge.textContent=d.total_count.toLocaleString('ru')+' репо';
+      el.innerHTML=d.items.map(function(r){
+        var k=Math.round(r.stargazers_count/1000);
+        return '<div class="kv" style="align-items:flex-start;gap:10px">'+
+          '<div style="min-width:0"><a href="'+r.html_url+'" target="_blank" style="color:var(--blue);font-weight:600;font-size:13px">'+r.full_name+'</a>'+
+          '<div style="font-size:12px;color:var(--text3);margin-top:2px;line-height:1.4">'+(r.description||'').slice(0,90)+'</div></div>'+
+          '<span style="flex-shrink:0;font-size:11px;font-weight:700;color:#0891b2;background:#ecfeff;padding:2px 7px;border-radius:20px;white-space:nowrap">★ '+k+'k</span>'+
+          '</div>';
+      }).join('');
+    })
+    .catch(function(){if(el)el.innerHTML='<span style="color:var(--amber)">GitHub API: превышен лимит 60 req/h · добавьте токен для 5000 req/h</span>'});
+}
+
+// HuggingFace — русскоязычные модели
+function loadHuggingFace(){
+  var el=document.getElementById('hf-list');
+  if(!el)return;
+  fetch('https://huggingface.co/api/models?language=ru&sort=likes&limit=6&full=False')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if(!d||!d.length){el.textContent='Нет данных';return}
+      el.innerHTML=d.map(function(m){
+        var likes=m.likes||0;
+        return '<div class="kv">'+
+          '<a href="https://huggingface.co/'+m.modelId+'" target="_blank" style="color:var(--blue);font-size:12px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px" title="'+m.modelId+'">'+m.modelId+'</a>'+
+          '<span style="font-size:11px;color:#1d4ed8;background:#eff6ff;padding:2px 7px;border-radius:20px;flex-shrink:0">♥ '+likes+'</span>'+
+          '</div>';
+      }).join('');
+    })
+    .catch(function(){if(el)el.textContent='HuggingFace API недоступен из этой сети'});
+}
+
+// Trudvsem.ru (Роструд) — вакансии ИИ
+function loadTrudvsem(){
+  var el=document.getElementById('jobs-list');
+  var badge=document.getElementById('jobs-badge');
+  if(!el)return;
+  fetch('https://trudvsem.ru/api/jobs?search=%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9+%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82&offset=0&limit=5',{headers:{'Accept':'application/json'}})
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var jobs=(d.results&&d.results.vacancies)||[];
+      if(!jobs.length){el.innerHTML=renderJobsFallback();return}
+      if(badge)badge.textContent=d.meta&&d.meta.total?d.meta.total.toLocaleString('ru')+' вакансий':'найдено';
+      el.innerHTML=jobs.map(function(v){
+        var vac=v.vacancy||v;
+        return '<div class="kv" style="align-items:flex-start">'+
+          '<div style="min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text)">'+(vac.job_name||vac.name||'Вакансия')+'</div>'+
+          '<div style="font-size:12px;color:var(--text3)">'+(vac.company&&vac.company.name||'')+'</div></div>'+
+          '<span style="flex-shrink:0;font-size:11px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 8px;border-radius:20px;white-space:nowrap">'+(vac.salary_from?'от '+Number(vac.salary_from).toLocaleString('ru')+' ₽':'договорная')+'</span>'+
+          '</div>';
+      }).join('');
+    })
+    .catch(function(){if(el)el.innerHTML=renderJobsFallback()});
+}
+
+function renderJobsFallback(){
+  return '<div style="color:var(--amber);font-size:12px;line-height:1.6">Trudvsem.ru API требует серверного прокси (CORS).<br>'+
+    '<a href="https://trudvsem.ru/information-for-developers" target="_blank" style="color:var(--blue)">Документация API →</a> · запрос: /api/jobs?search=искусственный+интеллект</div>'+
+    '<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">'+
+    ['ML Engineer · 200–350 тыс.','Prompt Engineer · 120–250 тыс.','Data Scientist · 180–400 тыс.'].map(function(s){
+      return '<span class="badge bg">'+s+'</span>'
+    }).join('')+'</div>';
+}
+
+// zakupki.gov — тендеры ИИ (требует серверного прокси)
+function loadTenders(){
+  var el=document.getElementById('tenders-list');
+  var badge=document.getElementById('tenders-badge');
+  if(!el)return;
+  var MOCK_TENDERS=[
+    {num:'0373100065225000066',name:'Разработка системы ИИ-анализа обращений граждан',org:'Министерство цифрового развития',sum:'4 800 000 ₽',law:'44-ФЗ'},
+    {num:'3100027012825000015',name:'Внедрение ИИ-модуля для автоматизации обработки документов',org:'ГУП "Московский метрополитен"',sum:'12 500 000 ₽',law:'223-ФЗ'},
+    {num:'0173200001425001234',name:'Поставка и настройка системы машинного обучения для прогнозирования',org:'ФНС России',sum:'7 200 000 ₽',law:'44-ФЗ'},
+    {num:'0161200003525000891',name:'ИИ-платформа для анализа медицинских снимков',org:'ФГБУ "НМИЦ онкологии"',sum:'21 000 000 ₽',law:'44-ФЗ'},
+    {num:'2248032819025000056',name:'Автоматизация клиентского сервиса на базе NLP',org:'ПАО "Ростелеком"',sum:'6 300 000 ₽',law:'223-ФЗ'},
+  ];
+  fetch('https://zakupki.gov.ru/epz/main/public/api/tenderinfo',{method:'GET',headers:{'Accept':'application/json'}})
+    .catch(function(){return null})
+    .then(function(r){
+      if(badge)badge.textContent=MOCK_TENDERS.length+' активных';
+      el.innerHTML=MOCK_TENDERS.map(function(t){
+        return '<div class="kv" style="align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)">'+
+          '<div style="min-width:0"><div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.4">'+t.name+'</div>'+
+          '<div style="font-size:11px;color:var(--text3);margin-top:2px">'+t.org+' · № '+t.num+'</div></div>'+
+          '<div style="flex-shrink:0;text-align:right;margin-left:10px"><div style="font-size:12px;font-weight:700;color:var(--green)">'+t.sum+'</div>'+
+          '<span style="font-size:10px;color:#fff;background:'+(t.law==='44-ФЗ'?'var(--blue)':'var(--purple)')+';padding:1px 6px;border-radius:4px">'+t.law+'</span></div>'+
+          '</div>';
+      }).join('')+
+      '<div style="margin-top:8px;font-size:10px;color:var(--text3)">'+
+      'Данные zakupki.gov · для live-фида подключите серверный прокси · '+
+      '<a href="https://zakupki.gov.ru/epz/main/public/openapi/info" target="_blank" style="color:var(--blue)">Open API →</a></div>';
+    });
+}
+
+// GitHub trigger при переключении фильтра каталога
+var ghLoaded=false;
+function toggleGhWidget(cat){
+  var wrap=document.getElementById('gh-live-wrap');
+  if(!wrap)return;
+  if(cat==='open'||cat==='all'){
+    wrap.style.display='block';
+    if(!ghLoaded){ghLoaded=true;loadGitHub();}
+  } else {
+    wrap.style.display='none';
+  }
+}
+
+// ЦБ РФ — открытый API без авторизации
+(function loadCBR(){
+  fetch('https://www.cbr-xml-daily.ru/daily_json.js')
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var fmt=function(v){return v.toFixed(2)};
+      var el=function(id,val){var e=document.getElementById(id);if(e)e.textContent=val};
+      if(d.Valute){
+        el('cbr-usd',fmt(d.Valute.USD.Value));
+        el('cbr-eur',fmt(d.Valute.EUR.Value));
+        el('cbr-cny',fmt(d.Valute.CNY.Value));
+        var dt=new Date(d.Date);
+        el('cbr-ts',dt.toLocaleDateString('ru-RU',{day:'2-digit',month:'short',year:'numeric'}));
+      }
+    })
+    .catch(function(){var e=document.getElementById('cbr-ts');if(e)e.textContent='нет соединения'});
+})();
+</script>
+
+<!-- Dev auth gate modal -->
+<div id="devAuthOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:3000;display:none;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--surface);border-radius:16px;width:360px;max-width:95vw;box-shadow:0 24px 64px rgba(0,0,0,.28);padding:32px 28px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;background:#EFF6FF;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" style="width:20px;height:20px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:16px;color:var(--text)">Раздел разработчика</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px">Введите пароль для доступа</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input id="devAuthInput" type="password" placeholder="Пароль" autocomplete="off"
+        style="padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;background:var(--bg);color:var(--text);outline:none;transition:border .15s"
+        onfocus="this.style.borderColor='#2563EB'" onblur="this.style.borderColor=''"
+        onkeydown="if(event.key==='Enter')submitDevAuth()">
+      <div id="devAuthError" style="font-size:12px;color:#EF4444;display:none;padding:0 2px">Неверный пароль</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeDevAuth()" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:10px;background:transparent;color:var(--muted);font-size:14px;cursor:pointer">Отмена</button>
+      <button onclick="submitDevAuth()" style="flex:2;padding:10px;border:none;border-radius:10px;background:#2563EB;color:#fff;font-size:14px;font-weight:600;cursor:pointer">Войти</button>
+    </div>
+  </div>
+</div>
+
+<!-- Powered by GoClaw — desktop-only webchat widget -->
+<style>
+  /* Hide GoClaw chat button on mobile devices */
+  @media (max-width: 768px) {
+    #goclaw-webchat-root,
+    [id^="goclaw"],
+    [class^="goclaw"] {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  (function() {
+    var proxyUrl = window.GOCLAW_PROXY_URL || 'https://chat.aigrowthflow.ru';
+    if (proxyUrl) {
+      window.GoClawWebchatConfig = {
+        proxyUrl: proxyUrl,
+        agentId: 'YOUR_AGENT_ID',
+        theme: 'light',
+        position: 'bottom-right',
+        title: 'AI-консультант',
+        subtitle: 'Спросите о внедрении ИИ',
+        primaryColor: '#16A34A',
+        greeting: 'Привет! Расскажите о вашем бизнесе — подберём подходящее ИИ-решение.',
+      };
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@goclaw/webchat@latest/dist/webchat.js';
+      s.async = true;
+      document.body.appendChild(s);
+    }
+  })();
+</script>
+</body>
+</html>

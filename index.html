@@ -283,7 +283,11 @@ input[type=range]{flex:1;accent-color:var(--green)}
 .df-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit;box-sizing:border-box}
 .df-input:focus{border-color:var(--mc,var(--green))}
 textarea.df-input{resize:vertical;min-height:80px}
+[data-netlify-badge],#netlify-badge,.netlify-badge,#netlify-identity-menu-popup{display:none!important}
 </style>
+<script>
+(function(){var o=new MutationObserver(function(){document.querySelectorAll('[data-netlify-badge],[href*="netlify.com"]').forEach(function(el){var p=el.closest('div[style*="position: fixed"],div[style*="position:fixed"]');if(p)p.style.display='none';});});o.observe(document.body||document.documentElement,{childList:true,subtree:true});})();
+</script>
 </head>
 <body>
 
@@ -356,6 +360,9 @@ textarea.df-input{resize:vertical;min-height:80px}
     <div class="sf-market">
       <strong>AIGrowth</strong>
       3016 задач · 100 профессий · 5 нейросетей
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5">
+      Самозанятый · ИНН 250715201810
     </div>
   </div>
 </div>
@@ -873,7 +880,7 @@ textarea.df-input{resize:vertical;min-height:80px}
         </div>
         <div><label class="df-label">Что хотите автоматизировать или какая задача?</label><textarea class="df-input" id="diag_task" placeholder="Например: вручную обрабатываем 200 заявок в день, половина — типовые вопросы по доставке. Хотим чат-бот." style="min-height:90px"></textarea></div>
         <button id="diag_btn" class="btn btn-primary" style="padding:12px;font-size:14px;font-weight:600" onclick="submitDiagForm()">Отправить на диагностику →</button>
-        <div style="font-size:11px;color:var(--text3);text-align:center">или напишите напрямую: <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green);font-weight:600">@aigrowthclub</a></div>
+        <div style="font-size:11px;color:var(--text3);text-align:center">или напишите напрямую: <a href="https://t.me/agc_flow" target="_blank" style="color:var(--green);font-weight:600">@agc_flow</a></div>
       </div>
     </div>
   </div>
@@ -1087,7 +1094,7 @@ textarea.df-input{resize:vertical;min-height:80px}
       <div class="ph-title">Команда платформы</div>
       <div class="ph-sub">Основатель AIGrowth — пишите напрямую</div>
     </div>
-    <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="text-decoration:none">Связаться →</a>
+    <a href="https://t.me/agc_flow" target="_blank" class="btn btn-primary" style="text-decoration:none">Связаться →</a>
   </div>
 
   <div style="display:flex;flex-direction:column;gap:16px">
@@ -1112,7 +1119,7 @@ textarea.df-input{resize:vertical;min-height:80px}
             <div class="case-stat" style="padding:8px"><div class="case-val" style="font-size:16px">WinExtra</div><div class="case-lbl">Торговые сигналы</div></div>
           </div>
           <div style="display:flex;gap:8px">
-            <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="font-size:12px;padding:7px 16px;text-decoration:none">Написать →</a>
+            <a href="https://t.me/agc_flow" target="_blank" class="btn btn-primary" style="font-size:12px;padding:7px 16px;text-decoration:none">Написать →</a>
             <button class="btn btn-secondary" style="font-size:12px" onclick="setView('myprojects')">Смотреть проекты</button>
           </div>
         </div>
@@ -1125,7 +1132,7 @@ textarea.df-input{resize:vertical;min-height:80px}
       <div style="font-weight:600;font-size:15px;margin-bottom:6px;color:var(--text)">Присоединитесь как партнёр-разработчик</div>
       <div style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:360px;margin-left:auto;margin-right:auto">Маркетплейс разработчиков формируется. Если вы делаете ИИ-проекты для бизнеса — свяжитесь с нами.</div>
       <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
-        <a href="https://t.me/aigrowthclub" target="_blank" class="btn btn-primary" style="text-decoration:none;font-size:13px">Подать заявку →</a>
+        <a href="https://t.me/agc_flow" target="_blank" class="btn btn-primary" style="text-decoration:none;font-size:13px">Подать заявку →</a>
         <button class="btn btn-secondary" style="font-size:13px" onclick="setView('diagnostics')">Пройти диагностику</button>
       </div>
     </div>
@@ -1288,9 +1295,9 @@ function openDemo(id){
   h+='<div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:20px"><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Стек</div>'+stackRows+'</div>';
   h+='<div><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Как участвовать</div>';
   h+='<div style="display:flex;gap:10px;margin-bottom:16px">';
-  h+='<a href="https://t.me/aigrowthclub" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .15s" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="this.style.borderColor=\'\'">';
+  h+='<a href="https://t.me/agc_flow" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .15s" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="this.style.borderColor=\'\'">';
   h+='<svg viewBox="0 0 24 24" fill="none" stroke="'+p.color+'" stroke-width="1.8" style="width:22px;height:22px"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>';
-  h+='<span style="font-size:12px;font-weight:600;color:var(--text)">Telegram</span><span style="font-size:11px;color:var(--muted)">@aigrowthclub</span></a>';
+  h+='<span style="font-size:12px;font-weight:600;color:var(--text)">Telegram</span><span style="font-size:11px;color:var(--muted)">@agc_flow</span></a>';
   h+='<a href="mailto:hi@aigrowth.club" target="_blank" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;transition:border-color .15s" onmouseover="this.style.borderColor=\''+p.color+'\'" onmouseout="this.style.borderColor=\'\'">';
   h+='<svg viewBox="0 0 24 24" fill="none" stroke="'+p.color+'" stroke-width="1.8" style="width:22px;height:22px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
   h+='<span style="font-size:12px;font-weight:600;color:var(--text)">Email</span><span style="font-size:11px;color:var(--muted)">hi@aigrowth.club</span></a>';
@@ -1360,14 +1367,14 @@ function submitDemo(id){
     mBody.innerHTML='<div style="text-align:center;padding:40px 20px">'
       +'<div style="width:56px;height:56px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
       +'<div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">Заявка отправлена!</div>'
-      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу в <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green)">@aigrowthclub</a></div>'
+      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу в <a href="https://t.me/agc_flow" target="_blank" style="color:var(--green)">@agc_flow</a></div>'
       +'<button class="pa-btn pa-secondary" style="margin-top:24px;padding:10px 24px;font-size:13px" onclick="closeModal()">Закрыть</button>'
       +'</div>';
   }).catch(function(){
     mBody.innerHTML='<div style="text-align:center;padding:40px 20px">'
       +'<div style="width:56px;height:56px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
       +'<div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px">Заявка принята!</div>'
-      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Напишите нам напрямую в <a href="https://t.me/aigrowthclub" target="_blank" style="color:var(--green)">@aigrowthclub</a> — ответим быстрее всего там.</div>'
+      +'<div style="font-size:14px;color:var(--text2);line-height:1.6">Напишите нам напрямую в <a href="https://t.me/agc_flow" target="_blank" style="color:var(--green)">@agc_flow</a> — ответим быстрее всего там.</div>'
       +'<button class="pa-btn pa-secondary" style="margin-top:24px;padding:10px 24px;font-size:13px" onclick="closeModal()">Закрыть</button>'
       +'</div>';
   });
@@ -1391,12 +1398,12 @@ function submitDiagForm(){
     document.getElementById('diag_form_wrap').innerHTML='<div style="text-align:center;padding:28px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px">'
       +'<div style="font-size:40px;margin-bottom:12px">✅</div>'
       +'<div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px">Заявка принята</div>'
-      +'<div style="font-size:13px;color:#15803d;line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу: <a href="https://t.me/aigrowthclub" style="color:var(--green);font-weight:600">@aigrowthclub</a></div></div>';
+      +'<div style="font-size:13px;color:#15803d;line-height:1.6">Свяжемся в течение 24 часов.<br>Или напишите сразу: <a href="https://t.me/agc_flow" style="color:var(--green);font-weight:600">@agc_flow</a></div></div>';
   }).catch(function(){
     document.getElementById('diag_form_wrap').innerHTML='<div style="text-align:center;padding:28px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px">'
       +'<div style="font-size:40px;margin-bottom:12px">✅</div>'
       +'<div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px">Спасибо!</div>'
-      +'<div style="font-size:13px;color:#15803d">Напишите в <a href="https://t.me/aigrowthclub" style="color:var(--green);font-weight:600">@aigrowthclub</a></div></div>';
+      +'<div style="font-size:13px;color:#15803d">Напишите в <a href="https://t.me/agc_flow" style="color:var(--green);font-weight:600">@agc_flow</a></div></div>';
   });
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});

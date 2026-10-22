@@ -284,6 +284,45 @@ input[type=range]{flex:1;accent-color:var(--green)}
 .df-input:focus{border-color:var(--mc,var(--green))}
 textarea.df-input{resize:vertical;min-height:80px}
 [data-netlify-badge],#netlify-badge,.netlify-badge,#netlify-identity-menu-popup{display:none!important}
+
+/* ── Payment modal ── */
+#ykOverlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:5000;display:none;align-items:center;justify-content:center;padding:16px}
+#ykOverlay.open{display:flex}
+#ykBox{background:#fff;border-radius:20px;width:420px;max-width:96vw;box-shadow:0 32px 80px rgba(0,0,0,.22);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+@media(prefers-color-scheme:dark){#ykBox{background:#1e1e2e;color:#e2e8f0}}
+#ykHead{background:#1a56db;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+#ykHead .yk-merchant{color:#fff;font-weight:700;font-size:15px}
+#ykHead .yk-brand{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.75);font-size:12px}
+#ykHead .yk-brand svg{opacity:.85}
+#ykClose{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+#ykBody{padding:22px}
+#ykAmount{font-size:28px;font-weight:800;color:#111;margin-bottom:4px}
+@media(prefers-color-scheme:dark){#ykAmount{color:#f1f5f9}}
+#ykDesc{font-size:13px;color:#6b7280;margin-bottom:18px}
+.yk-tabs{display:flex;gap:0;background:#f3f4f6;border-radius:10px;padding:3px;margin-bottom:18px}
+.yk-tab{flex:1;text-align:center;padding:7px 0;font-size:13px;font-weight:500;color:#6b7280;border-radius:8px;cursor:pointer;transition:all .15s}
+.yk-tab.active{background:#fff;color:#1a56db;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+@media(prefers-color-scheme:dark){.yk-tabs{background:#2d2d44}.yk-tab.active{background:#1e1e2e;color:#60a5fa}}
+.yk-pane{display:none}
+.yk-pane.active{display:block}
+.yk-field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.yk-label{font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em}
+.yk-input{border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 13px;font-size:15px;width:100%;box-sizing:border-box;color:#111;background:#fff;outline:none;transition:border .15s;font-family:inherit}
+.yk-input:focus{border-color:#1a56db}
+@media(prefers-color-scheme:dark){.yk-input{background:#2d2d44;border-color:#3f3f5c;color:#e2e8f0}}
+.yk-row{display:flex;gap:10px}
+.yk-row .yk-field{flex:1}
+.yk-card-icons{display:flex;gap:6px;margin-bottom:14px;align-items:center}
+.yk-card-icon{height:24px;border-radius:4px;opacity:.8}
+.yk-sbp-wrap{text-align:center;padding:8px 0}
+.yk-sbp-banks{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.yk-bank-btn{border:1.5px solid #e5e7eb;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:500;color:#374151;background:#fff;cursor:pointer;transition:border .15s}
+.yk-bank-btn:hover{border-color:#1a56db;color:#1a56db}
+.yk-pay-btn{width:100%;padding:14px;background:#1a56db;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s;font-family:inherit}
+.yk-pay-btn:hover{opacity:.9}
+.yk-pay-btn.loading{opacity:.7;pointer-events:none}
+.yk-footer{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-top:1px solid #f3f4f6;font-size:11px;color:#9ca3af}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <script>
 (function(){var o=new MutationObserver(function(){document.querySelectorAll('[data-netlify-badge],[href*="netlify.com"]').forEach(function(el){var p=el.closest('div[style*="position: fixed"],div[style*="position:fixed"]');if(p)p.style.display='none';});});o.observe(document.body||document.documentElement,{childList:true,subtree:true});})();
@@ -1111,7 +1150,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Первые узнаёте о новых моделях</li>
           <li>✓ Фото и характеристики без рекламы</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:1.5px solid #7C3AED;border-radius:10px;color:#7C3AED;font-size:13px;font-weight:600;text-decoration:none">Подписаться бесплатно</a>
+        <button onclick="openPayment('AutoEvoFlow VIP-канал',0)" style="width:100%;display:block;text-align:center;padding:9px;border:1.5px solid #7C3AED;border-radius:10px;color:#7C3AED;font-size:13px;font-weight:600;background:transparent;cursor:pointer">Подписаться бесплатно</button>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#7C3AED;box-shadow:0 0 0 1px #7C3AED18">
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1125,7 +1164,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Оповещения о старте продаж в РФ</li>
           <li>✓ Доступ к архиву за 12 месяцев</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#7C3AED;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Оформить — 490 ₽/мес</a>
+        <button onclick="openPayment('AutoEvoFlow Аналитика Pro',490)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#7C3AED;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 490 ₽/мес</button>
       </div>
     </div>
   </div>
@@ -1151,7 +1190,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Планировщик публикаций</li>
           <li style="color:var(--text3)">✗ Видео и автопостинг</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:1.5px solid #2563EB;border-radius:10px;color:#2563EB;font-size:13px;font-weight:600;text-decoration:none">Оформить — 990 ₽/мес</a>
+        <button onclick="openPayment('OmniMindFlow Старт',990)" style="width:100%;display:block;text-align:center;padding:9px;border:1.5px solid #2563EB;border-radius:10px;color:#2563EB;font-size:13px;font-weight:600;background:transparent;cursor:pointer">Оплатить — 990 ₽/мес</button>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#2563EB;box-shadow:0 0 0 1px #2563EB18">
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1165,7 +1204,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Автопостинг в Telegram-каналы</li>
           <li>✓ Аналитика охватов и вовлечённости</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#2563EB;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Оформить — 2 490 ₽/мес</a>
+        <button onclick="openPayment('OmniMindFlow Pro',2490)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#2563EB;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 2 490 ₽/мес</button>
       </div>
     </div>
   </div>
@@ -1191,7 +1230,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Стратегия позиционирования</li>
           <li>✓ 30-минутная онлайн-консультация</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:1.5px solid #16A34A;border-radius:10px;color:#16A34A;font-size:13px;font-weight:600;text-decoration:none">Записаться — 990 ₽</a>
+        <button onclick="openPayment('RiseCoreFlow Диагностика бренда',990)" style="width:100%;display:block;text-align:center;padding:9px;border:1.5px solid #16A34A;border-radius:10px;color:#16A34A;font-size:13px;font-weight:600;background:transparent;cursor:pointer">Оплатить — 990 ₽</button>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#16A34A;box-shadow:0 0 0 1px #16A34A18">
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1205,7 +1244,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Обновление стратегии роста</li>
           <li>✓ Чат с обратной связью 5 дней/нед</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#16A34A;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Оформить — 4 900 ₽/мес</a>
+        <button onclick="openPayment('RiseCoreFlow Сопровождение',4900)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#16A34A;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 4 900 ₽/мес</button>
       </div>
     </div>
   </div>
@@ -1237,7 +1276,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ AI-аналитик и чат</li>
           <li>✓ Скринер + журнал + P&amp;L</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#CA8A04;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Оформить — 1 490 ₽</a>
+        <button onclick="openPayment('WinExtraFlow Pro',1490)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#CA8A04;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 1 490 ₽</button>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#7C3AED;box-shadow:0 0 0 1px #7C3AED18">
         <div style="font-size:13px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em">Premium</div>
@@ -1247,7 +1286,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Копитрейдинг</li>
           <li>✓ Маркетплейс стратегий</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#7C3AED;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Оформить — 2 990 ₽</a>
+        <button onclick="openPayment('WinExtraFlow Premium',2990)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#7C3AED;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 2 990 ₽</button>
       </div>
     </div>
   </div>
@@ -1272,7 +1311,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Приём заказов через платформу</li>
           <li>✓ Размещение кейсов и портфолио</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:1.5px solid #16A34A;border-radius:10px;color:#16A34A;font-size:13px;font-weight:600;text-decoration:none">Разместить профиль — 1 990 ₽</a>
+        <button onclick="openPayment('AIGrowthFlow Размещение разработчика',1990)" style="width:100%;display:block;text-align:center;padding:9px;border:1.5px solid #16A34A;border-radius:10px;color:#16A34A;font-size:13px;font-weight:600;background:transparent;cursor:pointer">Оплатить — 1 990 ₽</button>
       </div>
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#16A34A;box-shadow:0 0 0 1px #16A34A18">
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1286,7 +1325,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <li>✓ Подбор инструментов и разработчиков</li>
           <li>✓ Отчёт + онлайн-разбор 60 минут</li>
         </ul>
-        <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#16A34A;color:#fff;font-size:13px;font-weight:600;text-decoration:none">Заказать диагностику — 2 990 ₽</a>
+        <button onclick="openPayment('AIGrowthFlow ИИ-диагностика бизнеса',2990)" style="width:100%;display:block;text-align:center;padding:9px;border:none;border-radius:10px;background:#16A34A;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Оплатить — 2 990 ₽</button>
       </div>
     </div>
   </div>
@@ -1536,6 +1575,35 @@ function openDemo(id){
 
 function switchToDemo(id){closeModal();setTimeout(function(){openDemo(id)},80);}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
+// ── Payment modal ──
+var _ykProduct='',_ykPrice=0;
+function openPayment(name,price){
+  _ykProduct=name;_ykPrice=price;
+  document.getElementById('ykAmount').textContent=price.toLocaleString('ru-RU')+' ₽';
+  document.getElementById('ykDesc').textContent=name;
+  document.getElementById('ykPayAmt').textContent=price.toLocaleString('ru-RU')+' ₽';
+  document.getElementById('ykOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closePayment(){
+  document.getElementById('ykOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function ykTab(id,el){
+  document.querySelectorAll('.yk-tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.yk-pane').forEach(function(p){p.classList.remove('active')});
+  el.classList.add('active');
+  document.getElementById('ykPane-'+id).classList.add('active');
+}
+function submitPayment(){
+  var btn=document.getElementById('ykPayBtn');
+  btn.classList.add('loading');
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Обработка...';
+  var email=document.getElementById('yk-email').value||'';
+  var msg=encodeURIComponent('Оплата: '+_ykProduct+' — '+_ykPrice.toLocaleString('ru-RU')+' ₽'+(email?' | '+email:''));
+  setTimeout(function(){window.open('https://t.me/agc_flow?text='+msg,'_blank');btn.classList.remove('loading');closePayment();},1800);
+}
 
 var DEV_PASSWORD='agc2025';
 var DEV_SESSION_KEY='dev_auth';
@@ -1862,6 +1930,97 @@ function toggleGhWidget(cat){
     .catch(function(){var e=document.getElementById('cbr-ts');if(e)e.textContent='нет соединения'});
 })();
 </script>
+
+<!-- ── YooKassa payment modal ── -->
+<div id="ykOverlay" onclick="if(event.target===this)closePayment()">
+ <div id="ykBox">
+  <div id="ykHead">
+   <div class="yk-merchant">AIGrowth</div>
+   <div class="yk-brand">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Защищено ЮKassa
+   </div>
+   <button id="ykClose" class="yk-close" onclick="closePayment()">×</button>
+  </div>
+  <div id="ykBody">
+   <div id="ykAmount">0 ₽</div>
+   <div id="ykDesc">Подписка</div>
+   <div class="yk-tabs">
+    <div class="yk-tab active" onclick="ykTab('card',this)">Карта</div>
+    <div class="yk-tab" onclick="ykTab('sbp',this)">СБП</div>
+    <div class="yk-tab" onclick="ykTab('ymoney',this)">ЮMoney</div>
+   </div>
+
+   <!-- Карта -->
+   <div class="yk-pane active" id="ykPane-card">
+    <div class="yk-card-icons">
+     <img class="yk-card-icon" src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/visa.svg" alt="Visa">
+     <img class="yk-card-icon" src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/mastercard.svg" alt="MC">
+     <img class="yk-card-icon" src="https://cdn.jsdelivr.net/npm/payment-icons@1.1.0/min/flat/mir.svg" alt="МИР">
+    </div>
+    <div class="yk-field">
+     <div class="yk-label">Номер карты</div>
+     <input class="yk-input" id="yk-card-num" type="text" placeholder="0000 0000 0000 0000" maxlength="19"
+       oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)">
+    </div>
+    <div class="yk-row">
+     <div class="yk-field">
+      <div class="yk-label">Срок</div>
+      <input class="yk-input" id="yk-expiry" type="text" placeholder="ММ / ГГ" maxlength="7"
+        oninput="var v=this.value.replace(/\D/g,'');if(v.length>2)v=v.slice(0,2)+' / '+v.slice(2,4);this.value=v">
+     </div>
+     <div class="yk-field">
+      <div class="yk-label">CVV</div>
+      <input class="yk-input" id="yk-cvv" type="password" placeholder="•••" maxlength="3"
+        oninput="this.value=this.value.replace(/\D/g,'')">
+     </div>
+    </div>
+    <div class="yk-field">
+     <div class="yk-label">Имя как на карте</div>
+     <input class="yk-input" id="yk-name" type="text" placeholder="IVAN IVANOV"
+       oninput="this.value=this.value.toUpperCase()">
+    </div>
+   </div>
+
+   <!-- СБП -->
+   <div class="yk-pane" id="ykPane-sbp">
+    <div class="yk-sbp-wrap">
+     <div style="font-size:13px;color:#6b7280;margin-bottom:12px">Выберите банк для оплаты через СБП</div>
+     <div class="yk-sbp-banks">
+      <div class="yk-bank-btn">Сбербанк</div>
+      <div class="yk-bank-btn">Тинькофф</div>
+      <div class="yk-bank-btn">ВТБ</div>
+      <div class="yk-bank-btn">Альфа-Банк</div>
+      <div class="yk-bank-btn">Газпромбанк</div>
+      <div class="yk-bank-btn">Другой банк</div>
+     </div>
+    </div>
+   </div>
+
+   <!-- ЮMoney -->
+   <div class="yk-pane" id="ykPane-ymoney">
+    <div class="yk-field" style="margin-top:4px">
+     <div class="yk-label">Номер кошелька или телефон</div>
+     <input class="yk-input" id="yk-ymoney" type="text" placeholder="41001XXXXXXXXX или +7...">
+    </div>
+   </div>
+
+   <div class="yk-field" style="margin-top:4px">
+    <div class="yk-label">E-mail для чека</div>
+    <input class="yk-input" id="yk-email" type="email" placeholder="you@example.com">
+   </div>
+
+   <button class="yk-pay-btn" id="ykPayBtn" onclick="submitPayment()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Оплатить <span id="ykPayAmt"></span>
+   </button>
+  </div>
+  <div class="yk-footer">
+   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+   Платёж защищён SSL · PCI DSS · ЮKassa
+  </div>
+ </div>
+</div>
 
 <!-- Dev auth gate modal -->
 <div id="devAuthOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:3000;display:none;align-items:center;justify-content:center;padding:16px">

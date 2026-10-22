@@ -340,16 +340,20 @@ textarea.df-input{resize:vertical;min-height:80px}
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
     Диагностика
   </div>
-  <div class="nav-item" onclick="openDevAccess()">
+  <div class="nav-item" onclick="setView('myprojects')">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Мои проекты
-    <svg id="devLockIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;margin-left:4px;opacity:.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     <span class="nav-badge">4</span>
   </div>
   <div class="nav-item" onclick="setView('catalog')">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
     Каталог решений
     <span class="nav-badge">43</span>
+  </div>
+  <div class="nav-item" onclick="setView('pricing')">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Тарифы
+    <span class="nav-badge green">WEF</span>
   </div>
   <div class="nav-item" onclick="setView('developers')">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -1072,6 +1076,87 @@ textarea.df-input{resize:vertical;min-height:80px}
 </div>
 
 
+<!-- ===== ТАРИФЫ ===== -->
+<div class="view" id="v-pricing">
+  <div class="ph">
+    <div>
+      <div class="ph-title">Тарифы WinExtraFlow</div>
+      <div class="ph-sub">Торговые сигналы · AI-аналитика · Копитрейдинг · MOEX & Forex</div>
+    </div>
+    <a href="https://winextra.agc-flow.online" target="_blank" rel="noopener" class="btn-cta" style="text-decoration:none;font-size:13px">Открыть платформу →</a>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:4px">
+
+    <!-- FREE -->
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Базовый</div>
+        <span class="badge bg">Бесплатно</span>
+      </div>
+      <div style="font-size:32px;font-weight:700;color:var(--text)">0 ₽<span style="font-size:14px;font-weight:400;color:var(--text3)">/мес</span></div>
+      <div style="height:1px;background:var(--border)"></div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2)">
+        <li>✓ До 5 торговых сигналов в день</li>
+        <li>✓ WEF Score для каждого сигнала</li>
+        <li>✓ Бэктест последних 30 дней</li>
+        <li>✓ Доступ к Telegram-каналу</li>
+        <li style="color:var(--text3)">✗ AI-аналитик и чат</li>
+        <li style="color:var(--text3)">✗ Копитрейдинг</li>
+      </ul>
+      <a href="https://winextra.agc-flow.online" target="_blank" rel="noopener" style="margin-top:auto;display:block;text-align:center;padding:10px;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-weight:500;text-decoration:none">Начать бесплатно</a>
+    </div>
+
+    <!-- PRO -->
+    <div class="card" style="display:flex;flex-direction:column;gap:12px;border-color:#CA8A04;box-shadow:0 0 0 1px #CA8A0420">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;font-weight:600;color:#CA8A04;text-transform:uppercase;letter-spacing:.05em">Pro</div>
+        <span class="badge" style="background:#FEF9C3;color:#92400E;border:1px solid #FDE68A">Популярный</span>
+      </div>
+      <div style="font-size:32px;font-weight:700;color:var(--text)">1 490 ₽<span style="font-size:14px;font-weight:400;color:var(--text3)">/мес</span></div>
+      <div style="height:1px;background:var(--border)"></div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2)">
+        <li>✓ Все торговые сигналы без ограничений</li>
+        <li>✓ AI-аналитик (чат с GPT-моделью)</li>
+        <li>✓ Скринер активов в реальном времени</li>
+        <li>✓ Торговый журнал и P&amp;L статистика</li>
+        <li>✓ Бэктест за всю историю</li>
+        <li>✓ Уведомления по условию цены</li>
+      </ul>
+      <a href="https://winextra.agc-flow.online" target="_blank" rel="noopener" style="margin-top:auto;display:block;text-align:center;padding:10px;border:none;border-radius:10px;background:#CA8A04;color:#fff;font-size:14px;font-weight:600;text-decoration:none">Подключить Pro — 1 490 ₽</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="card" style="display:flex;flex-direction:column;gap:12px;border-color:#7C3AED;box-shadow:0 0 0 1px #7C3AED20">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:13px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em">Premium</div>
+        <span class="badge" style="background:#EDE9FE;color:#5B21B6;border:1px solid #C4B5FD">Максимум</span>
+      </div>
+      <div style="font-size:32px;font-weight:700;color:var(--text)">2 990 ₽<span style="font-size:14px;font-weight:400;color:var(--text3)">/мес</span></div>
+      <div style="height:1px;background:var(--border)"></div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2)">
+        <li>✓ Всё из Pro</li>
+        <li>✓ Копитрейдинг — автоисполнение сделок</li>
+        <li>✓ Маркетплейс стратегий</li>
+        <li>✓ Приоритетная поддержка</li>
+        <li>✓ Ранний доступ к новым функциям</li>
+        <li>✓ Выгрузка данных (CSV / API)</li>
+      </ul>
+      <a href="https://winextra.agc-flow.online" target="_blank" rel="noopener" style="margin-top:auto;display:block;text-align:center;padding:10px;border:none;border-radius:10px;background:#7C3AED;color:#fff;font-size:14px;font-weight:600;text-decoration:none">Подключить Premium — 2 990 ₽</a>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+    <div style="font-weight:600;font-size:15px;color:var(--text)">Реквизиты для оплаты</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.7">
+      Самозанятый · ИНН 250715201810 · Оплата через ЮKassa (банковские карты, СБП, ЮMoney)
+    </div>
+    <div style="font-size:13px;color:var(--text3)">По вопросам оплаты: <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="color:var(--blue)">@agc_flow</a></div>
+  </div>
+</div>
+
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
@@ -1144,7 +1229,7 @@ textarea.df-input{resize:vertical;min-height:80px}
 </div><!-- /layout -->
 
 <script>
-var VIEWS=['market','startups','professions','platform','phases','economics','diagnostics','myprojects','catalog','developers'];
+var VIEWS=['market','startups','professions','platform','phases','economics','diagnostics','myprojects','catalog','pricing','developers'];
 function setView(name){
   VIEWS.forEach(function(v){
     var el=document.getElementById('v-'+v);
@@ -1153,7 +1238,7 @@ function setView(name){
   var el=document.getElementById('v-'+name);
   if(el) el.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active')});
-  var map={market:0,startups:1,professions:2,platform:3,phases:4,economics:5,diagnostics:6,myprojects:7,catalog:8,developers:9};/* developers остаётся в индексе, секция переименована */
+  var map={market:0,startups:1,professions:2,platform:3,phases:4,economics:5,diagnostics:6,myprojects:7,catalog:8,pricing:9,developers:10};
   var items=document.querySelectorAll('.nav-item');
   if(map[name]!==undefined && items[map[name]]) items[map[name]].classList.add('active');
 }

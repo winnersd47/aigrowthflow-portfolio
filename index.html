@@ -423,9 +423,18 @@ textarea.df-input{resize:vertical;min-height:80px}
   </div>
 
   <div class="hero">
-    <div class="hero-title">Рынок ИИ — 2 трлн ₽. Большинство компаний ещё не зашли.</div>
-    <div class="hero-sub">60–70% российских компаний уже используют ИИ, но квалифицированных исполнителей катастрофически не хватает. AIGrowth соединяет предпринимателей с сертифицированными ИИ-разработчиками и автоматизирует весь путь от диагностики до результата.</div>
-    <div class="hero-stats">
+    <div class="hero-title">Внедряем ИИ в ваш бизнес — от 490 ₽. Без программистов.</div>
+    <div class="hero-sub">5 готовых ИИ-продуктов: аналитика авторынка, автоконтент, личный бренд, торговые сигналы, диагностика бизнеса. Самозанятый, ИНН 250715201810 — официально и с чеком.</div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button onclick="setView('pricing')" style="padding:10px 22px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.2px">Смотреть тарифы →</button>
+      <a href="https://t.me/agc_flow" target="_blank" rel="noopener" style="padding:10px 18px;background:transparent;color:var(--green);border:1.5px solid var(--green-border);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center">Задать вопрос</a>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:18px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><span style="font-size:16px">⚡</span> Готово за 24–48 ч</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><span style="font-size:16px">💳</span> Фиксированная цена, чек</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><span style="font-size:16px">🤝</span> Без технических знаний</div>
+    </div>
+    <div class="hero-stats" style="margin-top:18px">
       <div class="hs"><div class="hs-val">2 трлн ₽</div><div class="hs-label">Объём рынка ИИ, 2025</div></div>
       <div class="hs"><div class="hs-val">+25%</div><div class="hs-label">Рост рынка в год</div></div>
       <div class="hs"><div class="hs-val">60–70%</div><div class="hs-label">Компаний применяют ИИ</div></div>
@@ -1123,6 +1132,26 @@ textarea.df-input{resize:vertical;min-height:80px}
     </div>
   </div>
 
+  <!-- Выгоды для клиента -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:22px">⚡</span>
+      <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Быстрый старт</div><div style="font-size:12px;color:var(--text3)">Первый результат за 24–48 часов после оплаты</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:22px">💳</span>
+      <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Чек и документы</div><div style="font-size:12px;color:var(--text3)">Самозанятый, ИНН 250715201810, оплата с чеком</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:22px">🛠️</span>
+      <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Под ключ</div><div style="font-size:12px;color:var(--text3)">Без технических знаний — всё настраиваем мы</div></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:22px">📞</span>
+      <div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">Поддержка</div><div style="font-size:12px;color:var(--text3)">Ответ в Telegram в течение 1 рабочего дня</div></div>
+    </div>
+  </div>
+
   <!-- Реквизиты -->
   <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <div style="font-size:13px;color:var(--text2)">Самозанятый · ИНН 250715201810 · Оплата через ЮKassa</div>
@@ -1144,6 +1173,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge bg">Бесплатно</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">0 ₽</div>
+        <div style="font-size:11px;color:#7C3AED;font-weight:600;background:#EDE9FE;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">📩 Доступ моментально</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ AI-обзоры новинок авто ежедневно</li>
           <li>✓ Первые узнаёте о новых моделях</li>
@@ -1157,6 +1187,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge" style="background:#EDE9FE;color:#5B21B6;border:1px solid #C4B5FD">Подписка</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">490 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#5B21B6;font-weight:600;background:#EDE9FE;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">⚡ Доступ за 2 часа после оплаты</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Расширенные AI-обзоры с историей</li>
           <li>✓ Сравнения моделей и конкурентный анализ</li>
@@ -1183,6 +1214,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge bg">До 30 постов</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">990 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#1D4ED8;font-weight:600;background:#EFF6FF;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">📅 Первый пост за 24 часа</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ До 30 AI-постов в месяц</li>
           <li>✓ Текст, заголовки, хэштеги</li>
@@ -1197,6 +1229,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE">Популярный</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">2 490 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#1D4ED8;font-weight:600;background:#EFF6FF;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">🚀 Автопостинг уже на следующий день</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Безлимит постов</li>
           <li>✓ AI-видео и короткие клипы</li>
@@ -1223,6 +1256,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge bg">Разовая</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">990 ₽</div>
+        <div style="font-size:11px;color:#166534;font-weight:600;background:#F0FDF4;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">📋 Отчёт за 48 часов + консультация</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Аудит текущего личного бренда</li>
           <li>✓ Карта точек роста</li>
@@ -1237,6 +1271,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge" style="background:#F0FDF4;color:#166534;border:1px solid #BBF7D0">Подписка</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">4 900 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#166534;font-weight:600;background:#F0FDF4;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">🤝 Старт через 1 рабочий день</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Ежемесячный контент-план</li>
           <li>✓ Разбор публикаций и ошибок</li>
@@ -1270,6 +1305,7 @@ textarea.df-input{resize:vertical;min-height:80px}
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#CA8A04;box-shadow:0 0 0 1px #CA8A0418">
         <div style="font-size:13px;font-weight:600;color:#CA8A04;text-transform:uppercase;letter-spacing:.05em">Pro</div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">1 490 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#92400E;font-weight:600;background:#FFFBEB;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">⚡ Сигналы с первого дня</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Все сигналы без лимита</li>
           <li>✓ AI-аналитик и чат</li>
@@ -1280,6 +1316,7 @@ textarea.df-input{resize:vertical;min-height:80px}
       <div class="card" style="display:flex;flex-direction:column;gap:10px;border-color:#7C3AED;box-shadow:0 0 0 1px #7C3AED18">
         <div style="font-size:13px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.05em">Premium</div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">2 990 ₽<span style="font-size:13px;font-weight:400;color:var(--text3)">/мес</span></div>
+        <div style="font-size:11px;color:#5B21B6;font-weight:600;background:#EDE9FE;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">🏆 Полный доступ сразу</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Всё из Pro</li>
           <li>✓ Копитрейдинг</li>
@@ -1305,6 +1342,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge bg">Разовая</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">1 990 ₽</div>
+        <div style="font-size:11px;color:#166534;font-weight:600;background:#F0FDF4;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">✅ Профиль готов за 48 часов</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Верифицированный профиль в каталоге</li>
           <li>✓ Приём заказов через платформу</li>
@@ -1318,6 +1356,7 @@ textarea.df-input{resize:vertical;min-height:80px}
           <span class="badge" style="background:#F0FDF4;color:#166534;border:1px solid #BBF7D0">Разовая</span>
         </div>
         <div style="font-size:24px;font-weight:700;color:var(--text)">2 990 ₽</div>
+        <div style="font-size:11px;color:#166534;font-weight:600;background:#F0FDF4;display:inline-block;padding:2px 8px;border-radius:6px;width:fit-content">📊 Отчёт + разбор за 48 часов</div>
         <ul style="list-style:none;padding:0;margin:0;font-size:12px;color:var(--text2);display:flex;flex-direction:column;gap:6px">
           <li>✓ Анализ 12 бизнес-процессов на автоматизацию</li>
           <li>✓ ROI-карта внедрения ИИ</li>

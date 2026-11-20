@@ -323,12 +323,70 @@ textarea.df-input{resize:vertical;min-height:80px}
 .yk-pay-btn.loading{opacity:.7;pointer-events:none}
 .yk-footer{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-top:1px solid #f3f4f6;font-size:11px;color:#9ca3af}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── Mobile Responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 20px rgba(0,0,0,0.3);
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+  .sidebar-overlay.open { display: block; }
+  .layout { flex-direction: column; }
+  .main { padding: 12px; }
+  .g4, .g3 { grid-template-columns: 1fr 1fr !important; }
+  .g2, .g2r { grid-template-columns: 1fr !important; }
+  .prog-l { width: auto; min-width: 80px; }
+  .param-col { width: auto; min-width: 80px; }
+  .hamburger {
+    display: flex;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1001;
+    background: var(--accent, #3b82f6);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .topbar { padding-left: 56px; }
+}
+@media (max-width: 480px) {
+  .g4, .g3 { grid-template-columns: 1fr !important; }
+}
+.hamburger { display: none; }
 </style>
 <script>
 (function(){var o=new MutationObserver(function(){document.querySelectorAll('[data-netlify-badge],[href*="netlify.com"]').forEach(function(el){var p=el.closest('div[style*="position: fixed"],div[style*="position:fixed"]');if(p)p.style.display='none';});});o.observe(document.body||document.documentElement,{childList:true,subtree:true});})();
 </script>
 </head>
 <body>
+<button class="hamburger" id="hamburgerBtn" aria-label="Меню">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -2135,6 +2193,22 @@ function toggleGhWidget(cat){
       document.body.appendChild(s);
     }
   })();
+</script>
+<script>
+(function(){
+  var btn = document.getElementById('hamburgerBtn');
+  var overlay = document.getElementById('sidebarOverlay');
+  var sidebar = document.querySelector('.sidebar');
+  if (!btn || !sidebar) return;
+  btn.addEventListener('click', function(){
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', function(){
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+})();
 </script>
 </body>
 </html>

@@ -786,12 +786,149 @@ textarea.df-input{resize:vertical;min-height:80px}
 <div class="view" id="v-aitools">
   <div class="ph">
     <div>
-      <div class="ph-title">AI-агенты: кто в чём лучше</div>
-      <div class="ph-sub">Сравнение по задачам: код, аналитика, разработка и исследования</div>
+      <div class="ph-title">AI-инструменты: кто в чём лучше</div>
+      <div class="ph-sub">Практическое сравнение по задачам — для предпринимателей без технического бэкграунда</div>
     </div>
   </div>
-  <div class="card" style="padding:0;overflow:hidden">
-    <img src="ai-agents-comparison.webp" alt="AI-агенты: кто в чём лучше" style="width:100%;display:block;">
+
+  <!-- Топ задач и рекомендации -->
+  <div class="g3" style="margin-bottom:20px">
+    <div class="stat-card" style="border-color:var(--green-border)">
+      <div class="stat-label">Самая частая задача</div>
+      <div class="stat-val" style="font-size:18px">Чат-боты</div>
+      <div class="stat-sub">62% всех заявок в AIGrowth</div>
+      <div class="stat-delta du">→ ChatGPT / YandexGPT</div>
+    </div>
+    <div class="stat-card" style="border-color:var(--blue-border)">
+      <div class="stat-label">Лучший для кода</div>
+      <div class="stat-val" style="font-size:18px">Claude 3.5</div>
+      <div class="stat-sub">Sonnet — оптимум цена/качество</div>
+      <div class="stat-delta du">→ Cursor, Windsurf IDE</div>
+    </div>
+    <div class="stat-card" style="border-color:var(--purple-border)">
+      <div class="stat-label">Лучший для данных</div>
+      <div class="stat-val" style="font-size:18px">GPT-4o</div>
+      <div class="stat-sub">Аналитика таблиц, PDF, графики</div>
+      <div class="stat-delta du">→ ChatGPT Advanced Data</div>
+    </div>
+  </div>
+
+  <!-- Таблица сравнения -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h">
+      <div class="card-title">Сравнительная таблица по задачам</div>
+      <span class="badge bg">Актуально 2025</span>
+    </div>
+    <div class="tbl-wrap">
+      <table class="cmp-tbl">
+        <thead>
+          <tr>
+            <th class="param-col">Задача</th>
+            <th class="th-green">ChatGPT / GPT-4o</th>
+            <th class="th-blue">Claude 3.5 / 3.7</th>
+            <th style="color:var(--amber)">YandexGPT 5</th>
+            <th style="color:var(--purple)">Gemini 2.0</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="param-col">Чат-бот для клиентов</td>
+            <td><span class="badge bg">★★★★★</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge ba">★★★★★ РФ</span></td>
+            <td><span class="badge bp">★★★</span></td>
+          </tr>
+          <tr>
+            <td class="param-col">Написание кода</td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge bg">★★★★★</span></td>
+            <td><span class="badge bn">★★</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+          </tr>
+          <tr>
+            <td class="param-col">Анализ данных / Excel</td>
+            <td><span class="badge bg">★★★★★</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge bn">★★★</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+          </tr>
+          <tr>
+            <td class="param-col">Тексты на русском</td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge bg">★★★★★</span></td>
+            <td><span class="badge bn">★★★</span></td>
+          </tr>
+          <tr>
+            <td class="param-col">Работа с документами</td>
+            <td><span class="badge bb">★★★★</span></td>
+            <td><span class="badge bg">★★★★★</span></td>
+            <td><span class="badge ba">★★★★ ФЗ</span></td>
+            <td><span class="badge bb">★★★★</span></td>
+          </tr>
+          <tr>
+            <td class="param-col">Соответствие 152-ФЗ</td>
+            <td><span class="badge br">✗ Иностранный</span></td>
+            <td><span class="badge br">✗ Иностранный</span></td>
+            <td><span class="badge bg">✓ Серверы РФ</span></td>
+            <td><span class="badge br">✗ Иностранный</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Инструменты по категориям -->
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-h"><div class="card-title">Генерация текста и контента</div></div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--green-bg);color:var(--green)">1</div>
+        <div><div class="mod-name">ChatGPT 4o / o3</div><div class="mod-desc">Универсал. Лучший для маркетинговых текстов, сценариев, брейнштормов. API от $5/млн токенов.</div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--blue-bg);color:var(--blue)">2</div>
+        <div><div class="mod-name">Claude 3.5 Sonnet</div><div class="mod-desc">Длинные документы, юридические тексты, детальный анализ. 200k контекст. API от $3/млн.</div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--amber-bg);color:var(--amber)">3</div>
+        <div><div class="mod-name">YandexGPT 5 Pro</div><div class="mod-desc">Русский язык, работает в РФ без VPN, 152-ФЗ. Лучший выбор для b2g и банков.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div class="card-title">Разработка и автоматизация</div></div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--green-bg);color:var(--green)">1</div>
+        <div><div class="mod-name">Cursor + Claude 3.7</div><div class="mod-desc">AI-редактор кода. Пишет целые функции, рефакторит, покрывает тестами. Стандарт для AIGrowth-разработчиков.</div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--blue-bg);color:var(--blue)">2</div>
+        <div><div class="mod-name">n8n + OpenAI</div><div class="mod-desc">No-code автоматизация: CRM, Telegram-боты, обработка заявок. Деплой на VPS от 500 ₽/мес.</div></div>
+      </div>
+      <div class="mod-row">
+        <div class="mod-num" style="background:var(--purple-bg);color:var(--purple)">3</div>
+        <div><div class="mod-name">Make (Integromat)</div><div class="mod-desc">Визуальные сценарии: интеграция любых сервисов. Альтернатива Zapier с серверами в ЕС.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Советы по выбору -->
+  <div class="card" style="border-color:var(--green-border);background:linear-gradient(135deg,rgba(0,230,118,0.05) 0%,var(--surface) 100%)">
+    <div class="card-h"><div class="card-title">Как выбрать инструмент под задачу</div><span class="badge bg">Гайд AIGrowth</span></div>
+    <div class="g2" style="margin-bottom:0">
+      <div>
+        <div class="kv"><div class="kk">Нужен чат-бот для клиентов (РФ)</div><div class="kv-v" style="color:var(--amber)">YandexGPT + ChatBot API</div></div>
+        <div class="kv"><div class="kk">Автоматизация внутренних процессов</div><div class="kv-v" style="color:var(--blue)">n8n + GPT-4o Mini</div></div>
+        <div class="kv"><div class="kk">Разработка сайта / приложения</div><div class="kv-v" style="color:var(--green)">Cursor + Claude 3.5</div></div>
+        <div class="kv"><div class="kk">Анализ отчётов и данных</div><div class="kv-v" style="color:var(--green)">ChatGPT Advanced Data</div></div>
+      </div>
+      <div>
+        <div class="kv"><div class="kk">Генерация контента на русском</div><div class="kv-v" style="color:var(--amber)">YandexGPT / GigaChat</div></div>
+        <div class="kv"><div class="kk">Работа с документами (152-ФЗ)</div><div class="kv-v" style="color:var(--amber)">Яндекс Cloud + YandexGPT</div></div>
+        <div class="kv"><div class="kk">Голос / звонки / колл-центр</div><div class="kv-v" style="color:var(--purple)">Yandex SpeechKit</div></div>
+        <div class="kv"><div class="kk">Изображения и дизайн</div><div class="kv-v" style="color:var(--blue)">Midjourney / Flux / DALL-E</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
